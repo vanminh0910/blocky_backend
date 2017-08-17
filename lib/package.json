@@ -1,0 +1,18 @@
+{
+  "name": "serverless-hq-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "autoload.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Haseeb Qureshi",
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "^1.8.3",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.7.20"
+  }
+}
