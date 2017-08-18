@@ -30,7 +30,7 @@ module.exports.update = (event, context, callback) => {
     }
 
     if (_.isEmpty(result)) {
-      callback(null, utils.createResponse(400, 'device not-exist'));
+      callback(null, utils.createResponse(400, 'Device not exist'));
       return;
     }
 

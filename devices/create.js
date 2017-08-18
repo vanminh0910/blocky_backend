@@ -34,7 +34,6 @@ module.exports.create = (event, context, callback) => {
       return;
     }
 
-    // create a response
-    callback(null, utils.createResponse(200,null, params.Item ));
+    callback(null, utils.createResponse(200, null, params.Item ));
   });
 };

@@ -134,7 +134,7 @@ functions:
 
   # ReadAll
   DevicesReadAll:
-    handler: devices/list.listbyuser
+    handler: devices/list.listByUser
     events:
       - http:
           path: devices/listdevices
