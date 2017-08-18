@@ -230,20 +230,22 @@ functions:
 
   # Create
   DashboardsCreate:
-    handler: dashboards.create
+    handler: dashboards/create.create
     events:
       - http:
           path: dashboards
           method: post
+          authorizer : auth
           cors: true
 
   # ReadAll
   DashboardsReadAll:
-    handler: dashboards.readAll
+    handler: dashboards/list.listByUser
     events:
       - http:
           path: dashboards
           method: get
+          authorizer : auth
           cors: true
 
   # Read
@@ -254,23 +256,25 @@ functions:
           path: dashboards/{id}
           method: get
           cors: true
-
+      
   # Update
   DashboardsUpdate:
-    handler: dashboards.update
+    handler: dashboards/update.update
     events:
       - http:
           path: dashboards/{id}
           method: put
+          authorizer : auth
           cors: true
 
   # Delete
   DashboardsDelete:
-    handler: dashboards.delete
+    handler: dashboards/delete.delete
     events:
       - http:
           path: dashboards/{id}
           method: delete
+          authorizer : auth
           cors: true
 
 
@@ -355,9 +359,13 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName : ownerId
             KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
