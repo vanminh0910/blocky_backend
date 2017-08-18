@@ -9,13 +9,15 @@ const config = require('../lib/config');
 const constants = require('../lib/constants');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
+var _ = require('underscore');
 
 module.exports.update = (event, context, callback) => {
+
   const timestamp = new Date().getTime();
   const input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
-  if (!input.newName || !input.newLua ||!input.newXml) {
-    callback(null, utils.createResponse(400, 'Please enter valid new name , new lua , new XML'));
+  if ( !input.name ) {
+    callback(null, utils.createResponse(400, 'Invalid script data'));
     return;
   }
 
@@ -26,46 +28,47 @@ module.exports.update = (event, context, callback) => {
       ownerId: userId,
     }
   };
+
   dynamodb.get(getParams, (error, result) => {
     if (error) {
       console.error(error);
-      callback(null, utils.createResponse(500, 'Internal Server Error.'));
+      callback(null, utils.createResponse(500, 'An internal server error occurred '));
       return;
     }
-    if (utils.isEmpty(result)) {
-      callback(null, utils.createResponse(400, 'Non-existing script'));
-        return;
+
+    if (_.isEmpty(result)) {
+      callback(null, utils.createResponse(400, 'script not-exist'));
+      return;
     }
-    const updateParams = {
-      TableName: process.env.SCRIPTS_TABLE_NAME,
-      Key: {
-        id: event.pathParameters.id,
-        ownerId: userId,
-      },
-      ExpressionAttributeNames: {
-        '#name': 'name',
-        '#xml': 'xml',
-        '#lua': 'lua'
-      },
-      ExpressionAttributeValues: {
-        ':newName': input.newName,
-        ':newXml': input.newXml,
-        ':newLua': input.newLua,
-        ':updatedAt': timestamp,
-      },
-      UpdateExpression: 'SET #name = :newName, #xml = :newXml,#lua =:newLua , updatedAt = :updatedAt',
-      ReturnValues: 'ALL_NEW',
-    };
-    // update the todo in the database
-    dynamodb.update(updateParams, (error, result) => {
-      // handle potential errors
-      if (error) {
-        console.error(error);
-        callback(new Error('Couldn\'t update the this item.'));
-        return;
-      }
-      // create a response
-       callback(null, utils.createResponse(200,null,result ));
+
+    var attributeUpdates = utils.toAttributeUpdates({
+      name: input.name,
+      xml: input.xml,
+      lua: input.lua,
+      updatedAt: new Date().getTime()
     });
+
+    dynamodb.update({
+    TableName: process.env.SCRIPTS_TABLE_NAME,
+    AttributeUpdates: attributeUpdates,
+    Key: {
+      id: event.pathParameters.id,
+      ownerId: userId
+    },
+    ReturnValues: 'ALL_NEW'
+  }, (error, result) => {
+    if (error) {
+      console.error(error);
+      callback(null, utils.createResponse(500, 'An internal server error occurred'));
+      return;
+    }
+
+    result.Attributes.password = '';
+
+    callback(null, utils.createResponse(200, null, {
+      token: utils.generateToken(result.Attributes), 
+      user: result.Attributes
+    }));
+  });  
   });
 }

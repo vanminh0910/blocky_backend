@@ -15,10 +15,11 @@ module.exports.create = (event, context, callback) => {
   var input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
   
-  if (!input.name || !input.xml || !input.lua ) {
-    callback(null, utils.createResponse(400, 'Please enter valid name , xml , lua of script'));
+  if (!input.name ) {
+    callback(null, utils.createResponse(400, 'Invalid script data'));
     return;
   }
+
   var params = {
     TableName: process.env.SCRIPTS_TABLE_NAME,
     Item: {
@@ -32,18 +33,14 @@ module.exports.create = (event, context, callback) => {
     },
   };
 
-  // write the script to the database
   dynamodb.put(params, (error) => {
-    // handle potential errors
     if (error) {
       console.error(error);
       callback(null, utils.createResponse(500, 'An internal server error occurred'));
       return;
     }
 
-    // create a response
-    callback(null, utils.createResponse(200,null, {
-      script : params.Item
-    }));
+    callback(null, utils.createResponse(200,null, params.Item
+    ));
   });
 };
