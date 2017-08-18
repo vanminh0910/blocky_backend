@@ -124,20 +124,22 @@ functions:
 
   # Create
   DevicesCreate:
-    handler: devices.create
+    handler: devices/create.create
     events:
       - http:
           path: devices
           method: post
+          authorizer : auth
           cors: true
 
   # ReadAll
   DevicesReadAll:
-    handler: devices.readAll
+    handler: devices/list.listByUser
     events:
       - http:
           path: devices
           method: get
+          authorizer : auth
           cors: true
 
   # Read
@@ -151,20 +153,22 @@ functions:
 
   # Update
   DevicesUpdate:
-    handler: devices.update
+    handler: devices/update.update
     events:
       - http:
           path: devices/{id}
           method: put
+          authorizer: auth
           cors: true
 
   # Delete
   DevicesDelete:
-    handler: devices.delete
+    handler: devices/delete.delete
     events:
       - http:
           path: devices/{id}
           method: delete
+          authorizer : auth
           cors: true
 
   #==========================
@@ -310,12 +314,17 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName : ownerId
             KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        
 
     # scripts dynamodb table resource
     ScriptsDynamoDBTable:
