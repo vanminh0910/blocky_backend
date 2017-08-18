@@ -134,7 +134,7 @@ functions:
 
   # ReadAll
   DevicesReadAll:
-    handler: devices/getalldevices.list
+    handler: devices/list.listbyuser
     events:
       - http:
           path: devices/listdevices
@@ -153,20 +153,22 @@ functions:
 
   # Update
   DevicesUpdate:
-    handler: devices.update
+    handler: devices/update.update
     events:
       - http:
           path: devices/{id}
           method: put
+          authorizer: auth
           cors: true
 
   # Delete
   DevicesDelete:
-    handler: devices.delete
+    handler: devices/delete.delete
     events:
       - http:
-          path: devices/{id}
+          path: devices/delete/{id}
           method: delete
+          authorizer : auth
           cors: true
 
   #==========================
@@ -308,9 +310,13 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName : ownerId
             KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

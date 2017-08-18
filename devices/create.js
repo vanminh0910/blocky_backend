@@ -1,12 +1,6 @@
 'use strict';
 
 const uuid = require('uuid');
-const shortid = require('shortid');
-const validator = require('validator');
-const bcrypt = require('bcrypt-nodejs');
-const jwt = require('jsonwebtoken');
-const config = require('../lib/config');
-const constants = require('../lib/constants');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
 
@@ -15,10 +9,11 @@ module.exports.create = (event, context, callback) => {
   var input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
   
-  if (!input.name || !input.chipId ) {
-    callback(null, utils.createResponse(400, 'Please enter valid name of device'));
+  if (!input.name ) {
+    callback(null, utils.createResponse(400, 'Invalid device name'));
     return;
   }
+
   var params = {
     TableName: process.env.DEVICES_TABLE_NAME,
     Item: {
@@ -32,9 +27,7 @@ module.exports.create = (event, context, callback) => {
     },
   };
 
-  // write the script to the database
   dynamodb.put(params, (error) => {
-    // handle potential errors
     if (error) {
       console.error(error);
       callback(null, utils.createResponse(500, 'An internal server error occurred'));
@@ -42,8 +35,6 @@ module.exports.create = (event, context, callback) => {
     }
 
     // create a response
-    callback(null, utils.createResponse(200,null, {
-      script : params.Item
-    }));
+    callback(null, utils.createResponse(200,null, params.Item ));
   });
 };
