@@ -6,7 +6,6 @@ const validator = require('validator');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 const config = require('../lib/config');
-const constants = require('../lib/constants');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
 
