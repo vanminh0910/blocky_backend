@@ -186,7 +186,7 @@ functions:
     handler: scripts/list.listByUser
     events:
       - http:
-          path: scripts/listscript
+          path: scripts
           method: get
           authorizer : auth
           cors: true
@@ -215,7 +215,7 @@ functions:
     handler: scripts/delete.delete
     events:
       - http:
-          path: scripts/delete/{id}
+          path: scripts/{id}
           method: delete
           authorizer: auth
           cors: true
