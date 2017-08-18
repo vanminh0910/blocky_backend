@@ -16,11 +16,11 @@ module.exports.listByUser = (event, context, callback) => {
   var params = {
     TableName: process.env.SCRIPTS_TABLE_NAME,
     KeyConditionExpression: "#ownerId = :ownerId",
-    ExpressionAttributeNames:{
+    ExpressionAttributeNames: {
       "#ownerId": "ownerId"
-      },
+    },
     ExpressionAttributeValues: {
-    ":ownerId":ownerId,
+    ":ownerId": ownerId,
     }
   };
 
