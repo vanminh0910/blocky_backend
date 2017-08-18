@@ -31,7 +31,7 @@ module.exports.delete = (event, context, callback) => {
     }
 
     if (_.isEmpty(result)) {
-      callback(null, utils.createResponse(400, 'script not-exist'));
+      callback(null, utils.createResponse(400, 'Script not exist'));
       return;
     }
 
@@ -53,7 +53,7 @@ module.exports.delete = (event, context, callback) => {
         return;
       }
 
-      callback(null, utils.createResponse(200, 'Deleted successfully'));
+      callback(null, utils.createResponse(200));
     });
   });
 };

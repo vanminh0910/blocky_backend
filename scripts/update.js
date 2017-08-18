@@ -37,7 +37,7 @@ module.exports.update = (event, context, callback) => {
     }
 
     if (_.isEmpty(result)) {
-      callback(null, utils.createResponse(400, 'script not-exist'));
+      callback(null, utils.createResponse(400, 'script not exist'));
       return;
     }
 
@@ -63,12 +63,7 @@ module.exports.update = (event, context, callback) => {
       return;
     }
 
-    result.Attributes.password = '';
-
-    callback(null, utils.createResponse(200, null, {
-      token: utils.generateToken(result.Attributes), 
-      user: result.Attributes
-    }));
+    callback(null, utils.createResponse(200, null, result.Attributes ));
   });  
   });
 }

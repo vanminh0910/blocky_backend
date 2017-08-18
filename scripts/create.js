@@ -40,7 +40,6 @@ module.exports.create = (event, context, callback) => {
       return;
     }
 
-    callback(null, utils.createResponse(200,null, params.Item
-    ));
+    callback(null, utils.createResponse(200,null, params.Item));
   });
 };

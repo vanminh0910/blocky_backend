@@ -10,7 +10,7 @@ const constants = require('../lib/constants');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
 
-module.exports.listbyuser = (event, context, callback) => {
+module.exports.listByUser = (event, context, callback) => {
   
   const ownerId = event.requestContext.authorizer.principalId;
   var params = {
@@ -30,6 +30,6 @@ module.exports.listbyuser = (event, context, callback) => {
       callback(null, utils.createResponse(500, 'An internal server error occurred '));   
       return;
     }
-    callback(null, utils.createResponse(200,null, result.Items));
+    callback(null, utils.createResponse( 200, null, result.Items));
   });
 };

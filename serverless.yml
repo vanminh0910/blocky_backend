@@ -183,7 +183,7 @@ functions:
 
   # ReadAll
   ScriptsReadAll:
-    handler: scripts/list.listbyuser
+    handler: scripts/list.listByUser
     events:
       - http:
           path: scripts/listscript
