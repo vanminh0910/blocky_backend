@@ -124,20 +124,22 @@ functions:
 
   # Create
   DevicesCreate:
-    handler: devices.create
+    handler: devices/create.create
     events:
       - http:
           path: devices
           method: post
+          authorizer : auth
           cors: true
 
   # ReadAll
   DevicesReadAll:
-    handler: devices.readAll
+    handler: devices/getalldevices.list
     events:
       - http:
-          path: devices
+          path: devices/listdevices
           method: get
+          authorizer : auth
           cors: true
 
   # Read
@@ -312,6 +314,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        
 
     # scripts dynamodb table resource
     ScriptsDynamoDBTable:
