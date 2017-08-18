@@ -173,20 +173,22 @@ functions:
 
   # Create
   ScriptsCreate:
-    handler: scripts.create
+    handler: scripts/create.create
     events:
       - http:
           path: scripts
           method: post
+          authorizer: auth
           cors: true
 
   # ReadAll
   ScriptsReadAll:
-    handler: scripts.readAll
+    handler: scripts/list.listByUser
     events:
       - http:
-          path: scripts
+          path: scripts/listscript
           method: get
+          authorizer : auth
           cors: true
 
   # Read
@@ -200,20 +202,22 @@ functions:
 
   # Update
   ScriptsUpdate:
-    handler: scripts.update
+    handler: scripts/update.update
     events:
       - http:
           path: scripts/{id}
           method: put
+          authorizer: auth
           cors: true
-
+          
   # Delete
   ScriptsDelete:
-    handler: scripts.delete
+    handler: scripts/delete.delete
     events:
       - http:
-          path: scripts/{id}
+          path: scripts/delete/{id}
           method: delete
+          authorizer: auth
           cors: true
 
   #==========================
@@ -322,9 +326,13 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName : ownerId
             KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
