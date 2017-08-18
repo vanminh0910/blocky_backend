@@ -11,9 +11,9 @@ module.exports.listByUser = (event, context, callback) => {
     KeyConditionExpression: "#ownerId = :ownerId",
     ExpressionAttributeNames:{
       "#ownerId": "ownerId"
-      },
+    },
     ExpressionAttributeValues: {
-    ":ownerId":ownerId,
+    ":ownerId": ownerId,
     }
   };
 

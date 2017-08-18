@@ -34,9 +34,9 @@ module.exports.delete = (event, context, callback) => {
         id: event.pathParameters.id,
         ownerId: userId,
       },
-      ConditionExpression: "id = :idDeleted",
+      ConditionExpression: "id = :deletedDeviceId",
       ExpressionAttributeValues: {
-        ":idDeleted": event.pathParameters.id
+        ":deletedDeviceId": event.pathParameters.id
       },
     };
 

@@ -137,7 +137,7 @@ functions:
     handler: devices/list.listByUser
     events:
       - http:
-          path: devices/listdevices
+          path: devices
           method: get
           authorizer : auth
           cors: true
@@ -166,7 +166,7 @@ functions:
     handler: devices/delete.delete
     events:
       - http:
-          path: devices/delete/{id}
+          path: devices/{id}
           method: delete
           authorizer : auth
           cors: true
