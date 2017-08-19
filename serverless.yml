@@ -38,8 +38,15 @@ provider:
     DEVICES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-devices
     SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
     DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
+    SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
 
-# Self-referenced vars
+    JWT_SECRET_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.JWT_SECRET_KEY}
+    BROKER_NAME: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_NAME}
+    BROKER_EMAIL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_EMAIL}
+    BROKER_PASSWORD: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_PASSWORD}
+    BROKER_URL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_URL}
+    BROKER_PORT: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_PORT}
+
 custom:
 
   # Crud-enabled env variables (for yml self-reference)
@@ -47,6 +54,7 @@ custom:
   DEVICES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-devices
   SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
   DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
+  SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
 
   dynamodb:
     start:
@@ -55,11 +63,24 @@ custom:
       migrate: true
     migration:
       dir: offline/migrations
+    seed:
+      users:
+        sources:
+          - table: ${self:custom.USERS_TABLE_NAME}
+            sources: [./offline/seed/users.json]
 
 functions:
 
   auth:
     handler: lib/auth.auth
+
+  seed:
+    handler: lib/seed.seed
+    events:
+      - http:
+          path: seed/
+          method: get
+          cors: true
 
   #==========================
   # Users Methods
@@ -105,6 +126,15 @@ functions:
     events:
       - http:
           path: users/changeAuthKey
+          method: post
+          authorizer: auth
+          cors: true
+
+  UsersValidateAuthKey:
+    handler: users/validate-auth-key.validateAuthKey
+    events:
+      - http:
+          path: users/validateAuthKey
           method: post
           authorizer: auth
           cors: true
@@ -292,6 +322,8 @@ resources:
             AttributeType: S
           - AttributeName: email
             AttributeType: S
+          - AttributeName: authKey
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -302,6 +334,15 @@ resources:
         - IndexName: UsersEmailIndex
           KeySchema:
           - AttributeName: email
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: UsersAuthKeyIndex
+          KeySchema:
+          - AttributeName: authKey
             KeyType: HASH
           Projection:
             ProjectionType: ALL
@@ -366,6 +407,22 @@ resources:
             KeyType: HASH
           - AttributeName: id
             KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    # dashboards dynamodb table resource
+    SettingsDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.SETTINGS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName : name
+            KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

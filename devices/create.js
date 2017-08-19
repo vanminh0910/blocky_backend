@@ -3,15 +3,20 @@
 const uuid = require('uuid');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
+const constants = require('../lib/constants');
 
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   var input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
   
-  if (!input.name ) {
+  if (!input.name) {
     callback(null, utils.createResponse(400, 'Invalid device name'));
     return;
+  }
+
+  if (input.status != constants.STATUS_ONLINE) {
+    input.status = constants.STATUS_OFFLINE;
   }
 
   var params = {

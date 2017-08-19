@@ -5,4 +5,4 @@ Backend for blocky
 sls dynamodb install
 sls dynamodb migrate
 sls dynamodb seed
-sls dynamodb start
+sls dynamodb start --seed users
