@@ -11,6 +11,8 @@ const utils = require('../lib/utils');
 
 module.exports.login = (event, context, callback) => {
 
+  console.log(process.env.JWT_SECRET_KEY);
+
   const input = JSON.parse(event.body);
   if (!input.email || !input.password || !validator.isEmail(input.email)) {
     callback(null, utils.createResponse(400, 'Please enter valid email and password'));

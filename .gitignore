@@ -56,4 +56,6 @@ typings/
 
 # dotenv environment variables file
 .env
+staging.env.yml
+prod.env.yml
 

@@ -10,12 +10,12 @@ module.exports.update = (event, context, callback) => {
   const input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
   if (!input.name) {
-    callback(null, utils.createResponse(400, 'Invalid device data'));
+    callback(null, utils.createResponse(400, 'Invalid dashboard data'));
     return;
   }
 
   const getParams = {
-    TableName: process.env.DEVICES_TABLE_NAME,
+    TableName: process.env.DASHBOARDS_TABLE_NAME,
     Key: {
       id: event.pathParameters.id,
       ownerId: userId,
@@ -30,7 +30,7 @@ module.exports.update = (event, context, callback) => {
     }
 
     if (_.isEmpty(result)) {
-      callback(null, utils.createResponse(400, 'Device not exist'));
+      callback(null, utils.createResponse(400, 'Dashboard not exist'));
       return;
     }
 
@@ -40,8 +40,7 @@ module.exports.update = (event, context, callback) => {
     });
 
     dynamodb.update({
-<<<<<<< HEAD
-    TableName: process.env.DEVICES_TABLE_NAME,
+    TableName: process.env.DASHBOARDS_TABLE_NAME,
     AttributeUpdates: attributeUpdates,
     Key: {
       id: event.pathParameters.id,
@@ -57,23 +56,5 @@ module.exports.update = (event, context, callback) => {
 
     callback(null, utils.createResponse(200, null, result.Attributes ));
   });  
-=======
-      TableName: process.env.DEVICES_TABLE_NAME,
-      AttributeUpdates: attributeUpdates,
-      Key: {
-        id: event.pathParameters.id,
-        ownerId: userId
-      },
-      ReturnValues: 'ALL_NEW'
-    }, (error, result) => {
-      if (error) {
-        console.error(error);
-        callback(null, utils.createResponse(500, 'An internal server error occurred'));
-        return;
-      }
-
-      callback(null, utils.createResponse(200, null, result.Attributes ));
-    });  
->>>>>>> master
   });
 }

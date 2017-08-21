@@ -3,34 +3,19 @@
 const uuid = require('uuid');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
-<<<<<<< HEAD
-=======
-const constants = require('../lib/constants');
->>>>>>> master
 
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   var input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
   
-<<<<<<< HEAD
   if (!input.name ) {
-=======
-  if (!input.name) {
->>>>>>> master
-    callback(null, utils.createResponse(400, 'Invalid device name'));
+    callback(null, utils.createResponse(400, 'Invalid dashboard name'));
     return;
   }
 
-<<<<<<< HEAD
-=======
-  if (input.status != constants.STATUS_ONLINE) {
-    input.status = constants.STATUS_OFFLINE;
-  }
-
->>>>>>> master
   var params = {
-    TableName: process.env.DEVICES_TABLE_NAME,
+    TableName: process.env.DASHBOARDS_TABLE_NAME,
     Item: {
       id: uuid.v1(),
       chipId : input.chipId,
