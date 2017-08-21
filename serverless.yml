@@ -39,6 +39,7 @@ provider:
     SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
     DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
     SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
+    MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages
 
     JWT_SECRET_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.JWT_SECRET_KEY}
     BROKER_NAME: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_NAME}
@@ -55,7 +56,7 @@ custom:
   SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
   DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
   SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
-
+  MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages
   dynamodb:
     start:
       port: 8000
@@ -89,7 +90,27 @@ functions:
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+  #==========================
+  # Messages Methods
+  #==========================
 
+  #NewCreate
+  MessagesNew:
+    handler : messages/create.create
+    events :
+      - http: 
+         path : messages
+         method : post
+         authorizer : auth
+         cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
   #==========================
   # Users Methods
   #==========================
@@ -553,7 +574,25 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        
+    #messages dynamodb table resource
+    MessagesDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.MESSAGES_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: topic
+            AttributeType: S
+        KeySchema:
+          - AttributeName : topic
+            KeyType: HASH
+          - AttributeName: userId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 
     # scripts dynamodb table resource
     ScriptsDynamoDBTable:
