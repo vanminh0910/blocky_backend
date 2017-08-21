@@ -32,13 +32,13 @@ module.exports.create = (event, context, callback) => {
     },
   };
 
-  dynamodb.put(params, (error) => {
+  dynamodb.put(params, (error, result) => {
     if (error) {
       console.error(error);
       callback(null, utils.createResponse(500, 'An internal server error occurred'));
       return;
     }
 
-    callback(null, utils.createResponse(200,null, params.Item));
+    callback(null, utils.createResponse(200, null, params.Item));
   });
 };
