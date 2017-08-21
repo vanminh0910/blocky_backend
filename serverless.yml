@@ -123,6 +123,7 @@ functions:
   #==========================
 
   # Create
+
   DevicesCreate:
     handler: devices/create.create
     events:
@@ -131,7 +132,14 @@ functions:
           method: post
           authorizer : auth
           cors: true
-
+  DevicesupdateStatus:
+    handler: devices/updateStatus.updateStatus
+    events:
+      - http:
+          path: devices/{id}
+          method: post
+          authorizer : auth
+          cors: true
   # ReadAll
   DevicesReadAll:
     handler: devices/list.listByUser
