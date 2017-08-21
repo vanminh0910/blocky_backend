@@ -39,7 +39,7 @@ module.exports.updateStatus = (event, context, callback) => {
 
     if (userRole == constants.ROLE_BROKER) {
       var attributeUpdates = utils.toAttributeUpdates({
-        status: 0,
+        status: constants.STATUS_OFFLINE,
         updatedAt: new Date().getTime()
       });
       dynamodb.update({
