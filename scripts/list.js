@@ -20,7 +20,7 @@ module.exports.listByUser = (event, context, callback) => {
       "#ownerId": "ownerId"
     },
     ExpressionAttributeValues: {
-    ":ownerId": ownerId,
+      ":ownerId": ownerId,
     }
   };
 
@@ -30,6 +30,6 @@ module.exports.listByUser = (event, context, callback) => {
       callback(null, utils.createResponse(500, 'An internal server error occurred '));   
       return;
     }
-    callback(null, utils.createResponse( 200, null, result.Items));
+    callback(null, utils.createResponse(200, null, result.Items));
   });
 };

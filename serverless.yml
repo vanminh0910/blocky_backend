@@ -334,7 +334,7 @@ functions:
       - http:
           path: scripts
           method: get
-          authorizer : auth
+          authorizer: auth
           cors:
             origins:
               - '*'
