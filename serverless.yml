@@ -215,28 +215,15 @@ functions:
   #==========================
   # Devices Methods
   #==========================
-
-  # Create
-
-  DevicesCreate:
-    handler: devices/create.create
-    events:
-      - http:
-          path: devices
-          method: post
-          authorizer : auth
-<<<<<<< HEAD
-          cors: true
+  # Update Status
   DevicesupdateStatus:
-    handler: devices/updateStatus.updateStatus
-    events:
-      - http:
-          path: devices/{id}
-          method: post
-          authorizer : auth
-          cors: true
-=======
-          cors:
+   handler: devices/updateStatus.updateStatus
+   events:
+    - http:
+        path: devices/{id}
+        method: post
+        authorizer : auth
+        cors:
             origins:
               - '*'
             headers:
@@ -245,8 +232,24 @@ functions:
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
-
->>>>>>> master
+  # Create
+  DevicesCreate:
+    handler: devices/create.create
+    events:
+      - http:
+          path: devices
+          method: post
+          authorizer : auth
+          cors: true
+            # origins:
+            #   - '*'
+            # headers:
+            #   - Content-Type
+            #   - X-Amz-Date
+            #   - Authorization
+            #   - X-Api-Key
+            #   - X-Amz-Security-Token
+  
   # ReadAll
   DevicesReadAll:
     handler: devices/list.listByUser
@@ -255,9 +258,6 @@ functions:
           path: devices
           method: get
           authorizer : auth
-<<<<<<< HEAD
-          cors: true
-=======
           cors:
             origins:
               - '*'
@@ -267,7 +267,6 @@ functions:
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
->>>>>>> master
 
   # Read
   DevicesRead:
@@ -294,9 +293,6 @@ functions:
           path: devices/{id}
           method: put
           authorizer: auth
-<<<<<<< HEAD
-          cors: true
-=======
           cors:
             origins:
               - '*'
@@ -306,7 +302,6 @@ functions:
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
->>>>>>> master
 
   # Delete
   DevicesDelete:
@@ -316,9 +311,6 @@ functions:
           path: devices/{id}
           method: delete
           authorizer : auth
-<<<<<<< HEAD
-          cors: true
-=======
           cors:
             origins:
               - '*'
@@ -328,7 +320,6 @@ functions:
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
->>>>>>> master
 
   #==========================
   # Scripts Methods
