@@ -317,15 +317,7 @@ functions:
           path: scripts
           method: post
           authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   # ReadAll
   ScriptsReadAll:
@@ -335,15 +327,7 @@ functions:
           path: scripts
           method: get
           authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   # Read
   ScriptsRead:
@@ -352,15 +336,7 @@ functions:
       - http:
           path: scripts/{id}
           method: get
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   # Update
   ScriptsUpdate:
@@ -410,15 +386,7 @@ functions:
           path: dashboards
           method: post
           authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   # ReadAll
   DashboardsReadAll:
@@ -428,15 +396,7 @@ functions:
           path: dashboards
           method: get
           authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   # Read
   DashboardsRead:
@@ -445,15 +405,7 @@ functions:
       - http:
           path: dashboards/{id}
           method: get
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
       
   # Update
   DashboardsUpdate:
@@ -463,15 +415,7 @@ functions:
           path: dashboards/{id}
           method: put
           authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   # Delete
   DashboardsDelete:
@@ -481,15 +425,7 @@ functions:
           path: dashboards/{id}
           method: delete
           authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
 
 resources:
