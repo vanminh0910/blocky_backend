@@ -101,16 +101,10 @@ functions:
       - http:
           path: users/new_create
           method: get
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   UsersSignup:
     handler: users/signup.signup
@@ -118,15 +112,7 @@ functions:
       - http:
           path: users/signup
           method: post
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   UsersLogin:
     handler: users/login.login
@@ -134,15 +120,7 @@ functions:
       - http:
           path: users/login
           method: post
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   UsersChangePassword:
     handler: users/change-password.changePassword
@@ -150,16 +128,10 @@ functions:
       - http:
           path: users/password
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   UsersChangeAuthKey:
     handler: users/change-auth-key.changeAuthKey
@@ -167,16 +139,10 @@ functions:
       - http:
           path: users/changeAuthKey
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   UsersValidateAuthKey:
     handler: users/validate-auth-key.validateAuthKey
@@ -184,16 +150,10 @@ functions:
       - http:
           path: users/validateAuthKey
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   UsersChangeProfile:
     handler: users/change-profile.changeProfile
@@ -201,16 +161,10 @@ functions:
       - http:
           path: users/profile
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   #==========================
   # Devices Methods
@@ -223,16 +177,10 @@ functions:
       - http:
           path: devices
           method: post
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # ReadAll
   DevicesReadAll:
@@ -241,16 +189,10 @@ functions:
       - http:
           path: devices
           method: get
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Read
   DevicesRead:
@@ -259,15 +201,10 @@ functions:
       - http:
           path: devices/{id}
           method: get
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Update
   DevicesUpdate:
@@ -276,16 +213,10 @@ functions:
       - http:
           path: devices/{id}
           method: put
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Delete
   DevicesDelete:
@@ -294,16 +225,10 @@ functions:
       - http:
           path: devices/{id}
           method: delete
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   #==========================
   # Scripts Methods
@@ -316,7 +241,9 @@ functions:
       - http:
           path: scripts
           method: post
-          authorizer: auth
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
 
   # ReadAll
@@ -326,7 +253,9 @@ functions:
       - http:
           path: scripts
           method: get
-          authorizer: auth
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
 
   # Read
@@ -336,6 +265,9 @@ functions:
       - http:
           path: scripts/{id}
           method: get
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
 
   # Update
@@ -345,16 +277,10 @@ functions:
       - http:
           path: scripts/{id}
           method: put
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
           
   # Delete
   ScriptsDelete:
@@ -363,16 +289,10 @@ functions:
       - http:
           path: scripts/{id}
           method: delete
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   #==========================
   # Dashboards Methods
@@ -385,7 +305,9 @@ functions:
       - http:
           path: dashboards
           method: post
-          authorizer : auth
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
 
   # ReadAll
@@ -395,7 +317,9 @@ functions:
       - http:
           path: dashboards
           method: get
-          authorizer : auth
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
 
   # Read
@@ -405,6 +329,9 @@ functions:
       - http:
           path: dashboards/{id}
           method: get
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
       
   # Update
@@ -414,7 +341,9 @@ functions:
       - http:
           path: dashboards/{id}
           method: put
-          authorizer : auth
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
 
   # Delete
@@ -424,7 +353,9 @@ functions:
       - http:
           path: dashboards/{id}
           method: delete
-          authorizer : auth
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
           cors: true
 
 
