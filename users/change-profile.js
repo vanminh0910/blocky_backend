@@ -27,10 +27,10 @@ module.exports.changeProfile = (event, context, callback) => {
   }
 
   var attributeUpdates = utils.toAttributeUpdates({
-      name: input.name,
-      language: input.language,
-      updatedAt: new Date().getTime()
-    });
+    name: input.name,
+    language: input.language,
+    updatedAt: new Date().getTime()
+  });
 
   dynamodb.update({
     TableName: process.env.USERS_TABLE_NAME,

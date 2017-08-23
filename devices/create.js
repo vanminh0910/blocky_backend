@@ -10,8 +10,8 @@ module.exports.create = (event, context, callback) => {
   var input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
   
-  if (!input.name) {
-    callback(null, utils.createResponse(400, 'Invalid device name'));
+  if (!input.name || !input.chipId) {
+    callback(null, utils.createResponse(400, 'Invalid device data'));
     return;
   }
 

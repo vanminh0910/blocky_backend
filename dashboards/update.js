@@ -36,25 +36,26 @@ module.exports.update = (event, context, callback) => {
 
     var attributeUpdates = utils.toAttributeUpdates({
       name: input.name,
+      content: input.content,
       updatedAt: new Date().getTime()
     });
 
     dynamodb.update({
-    TableName: process.env.DASHBOARDS_TABLE_NAME,
-    AttributeUpdates: attributeUpdates,
-    Key: {
-      id: event.pathParameters.id,
-      ownerId: userId
-    },
-    ReturnValues: 'ALL_NEW'
-  }, (error, result) => {
-    if (error) {
-      console.error(error);
-      callback(null, utils.createResponse(500, 'An internal server error occurred'));
-      return;
-    }
+      TableName: process.env.DASHBOARDS_TABLE_NAME,
+      AttributeUpdates: attributeUpdates,
+      Key: {
+        id: event.pathParameters.id,
+        ownerId: userId
+      },
+      ReturnValues: 'ALL_NEW'
+    }, (error, result) => {
+      if (error) {
+        console.error(error);
+        callback(null, utils.createResponse(500));
+        return;
+      }
 
-    callback(null, utils.createResponse(200, null, result.Attributes ));
-  });  
+      callback(null, utils.createResponse(200, null, result.Attributes ));
+    });  
   });
 }

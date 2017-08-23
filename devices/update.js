@@ -1,15 +1,24 @@
 'use strict';
 
+const _ = require('underscore');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
-var _ = require('underscore');
+const constants = require('../lib/constants');
+
 
 module.exports.update = (event, context, callback) => {
 
   const timestamp = new Date().getTime();
   const input = JSON.parse(event.body);
   const userId = event.requestContext.authorizer.principalId;
-  if (!input.name) {
+
+  if (input.name == '') {
+    callback(null, utils.createResponse(400, 'Invalid device data'));
+    return;
+  }
+
+  if (input.status != undefined && input.status !== constants.STATUS_ONLINE 
+    && input.status !== constants.STATUS_OFFLINE) {
     callback(null, utils.createResponse(400, 'Invalid device data'));
     return;
   }
@@ -36,6 +45,7 @@ module.exports.update = (event, context, callback) => {
 
     var attributeUpdates = utils.toAttributeUpdates({
       name: input.name,
+      status: input.status,
       updatedAt: new Date().getTime()
     });
 
