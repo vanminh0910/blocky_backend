@@ -21,24 +21,25 @@ module.exports.create = (event, context, callback) => {
 
   var params = {
     TableName: process.env.SCRIPTS_TABLE_NAME,
-    Item: {
+    Item: utils.filterBlankAttributes({
       id: uuid.v1(),
       name: input.name,
       xml: input.xml,
       lua: input.lua,
+      mode: input.mode,
       ownerId: userId,
       createdAt: timestamp,
       updatedAt: timestamp,
-    },
+    }),
   };
 
-  dynamodb.put(params, (error) => {
+  dynamodb.put(params, (error, result) => {
     if (error) {
       console.error(error);
       callback(null, utils.createResponse(500, 'An internal server error occurred'));
       return;
     }
 
-    callback(null, utils.createResponse(200,null, params.Item));
+    callback(null, utils.createResponse(200, null, params.Item));
   });
 };

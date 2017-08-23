@@ -70,6 +70,9 @@ custom:
           - table: ${self:custom.USERS_TABLE_NAME}
             sources: [./offline/seed/users.json]
 
+  apiKeys:
+    - ${opt:stage, self:provider.stage}-brokerAPIKey
+
 functions:
 
   auth:
@@ -115,39 +118,13 @@ functions:
   # Users Methods
   #==========================
 
-  # NewCreate
-  UsersNew:
-    handler: users/create.create
-    events:
-      - http:
-          path: users/new_create
-          method: get
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-
   UsersSignup:
     handler: users/signup.signup
     events:
       - http:
           path: users/signup
           method: post
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   UsersLogin:
     handler: users/login.login
@@ -155,15 +132,7 @@ functions:
       - http:
           path: users/login
           method: post
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
 
   UsersChangePassword:
     handler: users/change-password.changePassword
@@ -171,16 +140,10 @@ functions:
       - http:
           path: users/password
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   UsersChangeAuthKey:
     handler: users/change-auth-key.changeAuthKey
@@ -188,16 +151,10 @@ functions:
       - http:
           path: users/changeAuthKey
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   UsersValidateAuthKey:
     handler: users/validate-auth-key.validateAuthKey
@@ -205,16 +162,8 @@ functions:
       - http:
           path: users/validateAuthKey
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          cors: true
+          private: true
 
   UsersChangeProfile:
     handler: users/change-profile.changeProfile
@@ -222,16 +171,10 @@ functions:
       - http:
           path: users/profile
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   #==========================
   # Devices Methods
@@ -244,16 +187,10 @@ functions:
       - http:
           path: devices
           method: post
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # ReadAll
   DevicesReadAll:
@@ -262,33 +199,22 @@ functions:
       - http:
           path: devices
           method: get
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Read
-  DevicesRead:
-    handler: devices.read
+  DevicesGet:
+    handler: devices/get.get
     events:
       - http:
           path: devices/{id}
           method: get
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Update
   DevicesUpdate:
@@ -297,16 +223,10 @@ functions:
       - http:
           path: devices/{id}
           method: put
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Delete
   DevicesDelete:
@@ -315,16 +235,10 @@ functions:
       - http:
           path: devices/{id}
           method: delete
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   #==========================
   # Scripts Methods
@@ -337,16 +251,10 @@ functions:
       - http:
           path: scripts
           method: post
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # ReadAll
   ScriptsReadAll:
@@ -355,33 +263,22 @@ functions:
       - http:
           path: scripts
           method: get
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Read
-  ScriptsRead:
-    handler: scripts.read
+  ScriptsGet:
+    handler: scripts/get.get
     events:
       - http:
           path: scripts/{id}
           method: get
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Update
   ScriptsUpdate:
@@ -390,16 +287,10 @@ functions:
       - http:
           path: scripts/{id}
           method: put
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
           
   # Delete
   ScriptsDelete:
@@ -408,16 +299,10 @@ functions:
       - http:
           path: scripts/{id}
           method: delete
-          authorizer: auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   #==========================
   # Dashboards Methods
@@ -430,16 +315,10 @@ functions:
       - http:
           path: dashboards
           method: post
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # ReadAll
   DashboardsReadAll:
@@ -448,33 +327,22 @@ functions:
       - http:
           path: dashboards
           method: get
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Read
-  DashboardsRead:
-    handler: dashboards.read
+  DashboardsGet:
+    handler: dashboards/get.get
     events:
       - http:
           path: dashboards/{id}
           method: get
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
       
   # Update
   DashboardsUpdate:
@@ -483,16 +351,10 @@ functions:
       - http:
           path: dashboards/{id}
           method: put
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
   # Delete
   DashboardsDelete:
@@ -501,16 +363,10 @@ functions:
       - http:
           path: dashboards/{id}
           method: delete
-          authorizer : auth
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
 
 
 resources:
@@ -659,17 +515,3 @@ package:
 plugins:
   - serverless-dynamodb-local
   - serverless-offline  
-
-
-#================================================================
-# This project was generated by Serverless HQ:
-# Your home base for powerfully easy Serverless scaffolding.
-# 
-# Get going in seconds:
-# 1) npm install serverless-hq -g
-# 2) sls-hq
-# 
-# Crafted by hq (2016-2017)
-# Twitter.com/_hq, github.com/haseebnqureshi
-# Made in knoxville, tennessee
-#================================================================

@@ -16,15 +16,16 @@ module.exports.create = (event, context, callback) => {
 
   var params = {
     TableName: process.env.DASHBOARDS_TABLE_NAME,
-    Item: {
+    Item: utils.filterBlankAttributes({
       id: uuid.v1(),
       chipId : input.chipId,
       name: input.name,
       status : input.status,
+      content: input.content,
       ownerId: userId,
       createdAt: timestamp,
       updatedAt: timestamp,
-    },
+    }),
   };
 
   dynamodb.put(params, (error) => {
