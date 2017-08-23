@@ -73,6 +73,8 @@ functions:
 
   auth:
     handler: lib/auth.auth
+  brokerAuth:
+    handler : lib/brokerAuth.auth
 
   seed:
     handler: lib/seed.seed
@@ -204,7 +206,17 @@ functions:
             name: auth
             resultTtlInSeconds: 0
           cors: true
-
+  # Update Status
+  UpdateStatus:
+    handler: devices/updateStatus.updateStatus
+    events:
+      - http:
+          path: devices/updateStatus
+          method: POST
+          authorizer:
+            name: brokerAuth
+            resultTtlInSeconds: 0
+          cors: true
   # Delete
   DevicesDelete:
     handler: devices/delete.delete
@@ -399,6 +411,8 @@ resources:
             AttributeType: S
           - AttributeName: ownerId
             AttributeType: S
+          - AttributeName: chipId
+            AttributeType: S  
         KeySchema:
           - AttributeName : ownerId
             KeyType: HASH
@@ -407,8 +421,16 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        
-
+        GlobalSecondaryIndexes:
+        - IndexName: DevicesChipIdIndex
+          KeySchema:
+          - AttributeName: chipId
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
     # scripts dynamodb table resource
     ScriptsDynamoDBTable:
       Type: AWS::DynamoDB::Table
