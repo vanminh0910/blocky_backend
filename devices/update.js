@@ -40,24 +40,6 @@ module.exports.update = (event, context, callback) => {
     });
 
     dynamodb.update({
-<<<<<<< HEAD
-    TableName: process.env.DEVICES_TABLE_NAME,
-    AttributeUpdates: attributeUpdates,
-    Key: {
-      id: event.pathParameters.id,
-      ownerId: userId
-    },
-    ReturnValues: 'ALL_NEW'
-  }, (error, result) => {
-    if (error) {
-      console.error(error);
-      callback(null, utils.createResponse(500, 'An internal server error occurred'));
-      return;
-    }
-
-    callback(null, utils.createResponse(200, null, result.Attributes ));
-  });  
-=======
       TableName: process.env.DEVICES_TABLE_NAME,
       AttributeUpdates: attributeUpdates,
       Key: {
@@ -74,6 +56,5 @@ module.exports.update = (event, context, callback) => {
 
       callback(null, utils.createResponse(200, null, result.Attributes ));
     });  
->>>>>>> master
   });
 }

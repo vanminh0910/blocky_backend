@@ -14,15 +14,19 @@ module.exports.updateStatus = (event, context, callback) => {
     KeyConditionExpression: 'chipId = :chipId',
     ExpressionAttributeValues: { ':chipId': input.chipId }
   };
-
+   
+  if (!input.chipId ||  !input.status ) {
+    callback(null, utils.createResponse(400, 'Please enter valid chipId and status'));
+    return;
+  }
   dynamodb.query(params, function (err, result) {
     if (err) {
       console.log(err);
-      callback(null, utils.createResponse(500, 'An internal server error occurred'));
+      callback(null, utils.createResponse(500));
       return;
     }
     var attributeUpdates = utils.toAttributeUpdates({
-      status: constants.STATUS_OFFLINE,
+      status: input.status,
       updatedAt: new Date().getTime()
     });
     var result = JSON.stringify(result.Items);
