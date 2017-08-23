@@ -104,16 +104,10 @@ functions:
       - http: 
          path : messages
          method : post
-         authorizer : auth
-         cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
+         authorizer:
+          name: auth
+          resultTtlInSeconds: 0
+         cors: true
   #==========================
   # Users Methods
   #==========================
