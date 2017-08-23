@@ -12,12 +12,8 @@ const utils = require('../lib/utils');
 
 module.exports.validateAuthKey = (event, context, callback) => {
 
-  const userId = event.requestContext.authorizer.principalId;
-
-  // TODO: only allow broker client to check the auth key
-  console.log(event.requestContext.authorizer);
-
   const input = JSON.parse(event.body);
+
   if (!input.authKey) {
     callback(null, utils.createResponse(400, 'Invalid authentication key'));
     return;

@@ -69,6 +69,9 @@ custom:
           - table: ${self:custom.USERS_TABLE_NAME}
             sources: [./offline/seed/users.json]
 
+  apiKeys:
+    - ${opt:stage, self:provider.stage}-brokerAPIKey
+
 functions:
 
   auth:
@@ -140,10 +143,8 @@ functions:
       - http:
           path: users/validateAuthKey
           method: post
-          authorizer:
-            name: auth
-            resultTtlInSeconds: 0
           cors: true
+          private: true
 
   UsersChangeProfile:
     handler: users/change-profile.changeProfile
