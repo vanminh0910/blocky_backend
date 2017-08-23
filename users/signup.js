@@ -46,7 +46,7 @@ module.exports.signup = (event, context, callback) => {
             password: bcrypt.hashSync(input.password),
             authKey : shortid.generate(),
             activated: true,
-            role: constants.ROLE_USER,
+            role: constants.ROLE_BROKER,
             language: 'en',
             createdAt: timestamp,
             updatedAt: timestamp,

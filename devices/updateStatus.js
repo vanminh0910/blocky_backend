@@ -15,36 +15,53 @@ module.exports.updateStatus = (event, context, callback) => {
     ExpressionAttributeValues: { ':chipId': input.chipId }
   };
    
-  if (!input.chipId ||  !input.status ) {
-    callback(null, utils.createResponse(400, 'Please enter valid chipId and status'));
+  if (!input.chipId  ) {
+    callback(null, utils.createResponse(400, 'Please enter valid chipId'));
     return;
   }
+
+  if (input.status != constants.STATUS_OFFLINE
+       && input.status != constants.STATUS_ONLINE) {
+    callback(null, utils.createResponse(400, 'Please enter valid  status'));
+    return;
+  }
+
   dynamodb.query(params, function (err, result) {
     if (err) {
       console.log(err);
       callback(null, utils.createResponse(500));
       return;
     }
+
+    if (_.isEmpty(result)) {
+      callback(null, utils.createResponse(400, 'Device not exist'));
+      return;
+    }
+
     var attributeUpdates = utils.toAttributeUpdates({
       status: input.status,
       updatedAt: new Date().getTime()
     });
-    var result = JSON.stringify(result.Items);
-    var result = result.slice(1,result.length-1);
-    var result = JSON.parse(result);
-     
+
+    if (result.Count != 1) {
+      callback(null, utils.createResponse(500));
+      return;
+    }
+ 
+    var item = result.Items[0];
+    
     dynamodb.update({
       TableName: process.env.DEVICES_TABLE_NAME,
       AttributeUpdates: attributeUpdates,
       Key: {
-        id: result.id,
-        ownerId: result.ownerId
+        id: item.id,
+        ownerId: item.ownerId
       },
       ReturnValues: 'ALL_NEW'
     }, (error, result) => {
       if (error) {
         console.error(error);
-        callback(null, utils.createResponse(500, 'An internal server error occurred'));
+        callback(null, utils.createResponse(500));
         return;
       }
 
