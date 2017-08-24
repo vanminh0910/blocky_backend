@@ -142,6 +142,17 @@ functions:
           cors: true
           private: true
 
+  UsersGetProfile:
+    handler: users/get-profile.getProfile
+    events:
+      - http:
+          path: users/profile
+          method: get
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
+
   UsersChangeProfile:
     handler: users/change-profile.changeProfile
     events:
@@ -216,6 +227,16 @@ functions:
             name: auth
             resultTtlInSeconds: 0
           cors: true
+
+  # Update Status
+  DevicesUpdateStatus:
+    handler: devices/updateStatus.updateStatus
+    events:
+      - http:
+          path: devices/status
+          method: POST
+          private: true
+          cors: true          
 
   #==========================
   # Scripts Methods
@@ -399,6 +420,8 @@ resources:
             AttributeType: S
           - AttributeName: ownerId
             AttributeType: S
+          - AttributeName: chipId
+            AttributeType: S
         KeySchema:
           - AttributeName : ownerId
             KeyType: HASH
@@ -407,6 +430,16 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+        - IndexName: DevicesChipIdIndex
+          KeySchema:
+          - AttributeName: chipId
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
     
     # scripts dynamodb table resource
     ScriptsDynamoDBTable:
