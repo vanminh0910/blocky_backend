@@ -24,6 +24,9 @@ provider:
         - dynamodb:*
       Resource: arn:aws:dynamodb:*:*:*
 
+  apiKeys:
+    - ${opt:stage, self:provider.stage}-blocky-brokerAPIKey
+
   environment:
 
     # Project environment variables
@@ -69,9 +72,6 @@ custom:
         sources:
           - table: ${self:custom.USERS_TABLE_NAME}
             sources: [./offline/seed/users.json]
-
-  apiKeys:
-    - ${opt:stage, self:provider.stage}-brokerAPIKey
 
 functions:
 
@@ -504,18 +504,30 @@ resources:
       Properties:
         TableName: ${self:custom.MESSAGES_TABLE_NAME}
         AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
           - AttributeName: userId
             AttributeType: S
           - AttributeName: topic
             AttributeType: S
         KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+        - IndexName: MessagesUserIdIndex
+          KeySchema:
           - AttributeName: userId
             KeyType: HASH
           - AttributeName: topic
             KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
 
 # Keeping packages small by excluding node_modules
 package:
