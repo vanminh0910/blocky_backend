@@ -42,7 +42,7 @@ provider:
     SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
     DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
     SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
-    MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages
+    MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages-v2
 
     JWT_SECRET_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.JWT_SECRET_KEY}
     BROKER_NAME: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_NAME}
@@ -59,7 +59,7 @@ custom:
   SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
   DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
   SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
-  MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages
+  MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages-v2
   dynamodb:
     start:
       port: 8000
