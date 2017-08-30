@@ -119,26 +119,25 @@ module.exports.create = (event, context, callback) => {
     } else {
       var user = result.Items[0];
 
-      if (input.topic == 'register') {
+      if (input.topic == '/register') {
         try {
           var deviceData = JSON.parse(input.data);
-          addUpdateDevice(user.id, deviceData, callback);
         } catch(e) {
           console.log('Invalid device data', e);
           callback(null, utils.createResponse(400, 'Invalid device data'));
         }
+        addUpdateDevice(user.id, deviceData, callback);
         return;
       }
 
       var params = {
         TableName: process.env.MESSAGES_TABLE_NAME,
         Item: {
-          id: uuid.v1(),
+          userIdTopic: user.id + '_' + input.topic,
           userId: user.id,
           topic: input.topic,
           data : input.data || ' ',
-          createdAt: timestamp,
-          updatedAt: timestamp,
+          createdAt: timestamp
         },
       };
 

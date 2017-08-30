@@ -3,6 +3,7 @@
 const constants = require('../lib/constants');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
+const getDashboardData = require('./get-dashboard-data').getDashboardData;
 
 module.exports.get = (event, context, callback) => {
 
