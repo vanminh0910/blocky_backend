@@ -35,7 +35,7 @@ module.exports.create = (event, context, callback) => {
   dynamodb.put(params, (error) => {
     if (error) {
       console.error(error);
-      callback(null, utils.createResponse(500, 'An internal server error occurred'));
+      callback(null, utils.createResponse(500));
       return;
     }
 

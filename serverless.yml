@@ -423,7 +423,7 @@ resources:
           - AttributeName: chipId
             AttributeType: S
         KeySchema:
-          - AttributeName : ownerId
+          - AttributeName: ownerId
             KeyType: HASH
           - AttributeName: id
             KeyType: RANGE
@@ -431,10 +431,12 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         GlobalSecondaryIndexes:
-        - IndexName: DevicesChipIdIndex
+        - IndexName: DevicesChipIdOwnerIdIndex
           KeySchema:
           - AttributeName: chipId
             KeyType: HASH
+          - AttributeName: ownerId
+            KeyType: RANGE
           Projection:
             ProjectionType: ALL
           ProvisionedThroughput:
