@@ -1,8 +1,9 @@
 'use strict';
 
+var _ = require('underscore');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
-var _ = require('underscore');
+const getDashboardData = require('./get-dashboard-data').getDashboardData;
 
 module.exports.update = (event, context, callback) => {
 
@@ -48,14 +49,55 @@ module.exports.update = (event, context, callback) => {
         ownerId: userId
       },
       ReturnValues: 'ALL_NEW'
-    }, (error, result) => {
+    }, (error, dashboard) => {
       if (error) {
         console.error(error);
         callback(null, utils.createResponse(500));
         return;
       }
 
-      callback(null, utils.createResponse(200, null, result.Attributes ));
+      if (input.subscribedTopics) {
+        var attributeUpdates = utils.toAttributeUpdates({
+          subscribedTopics: input.subscribedTopics,
+          updatedAt: new Date().getTime()
+        });
+  
+        dynamodb.update({
+          TableName: process.env.USERS_TABLE_NAME,
+          AttributeUpdates: attributeUpdates,
+          Key: {
+            id: userId
+          },
+          ReturnValues: 'ALL_NEW'
+        }, (error, result) => {
+          if (error) {
+            console.error(error);
+            callback(null, utils.createResponse(500));
+            return;
+          }
+          // get dashboard data
+          getDashboardData(userId, input.subscribedTopics, function(error, data) {
+            if (error) {
+              console.error(error);
+              callback(null, utils.createResponse(500));
+              return;
+            }
+  
+            callback(null, utils.createResponse(200, null, 
+            {
+              dashboard: dashboard.Attributes,
+              data: data
+            }));
+          });
+        }); 
+      } else {
+        callback(null, utils.createResponse(200, null, 
+          {
+            dashboard: dashboard.Attributes,
+            data: ''
+          })
+        );
+      }
     });  
   });
 }

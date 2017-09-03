@@ -53,7 +53,7 @@ function getTopicData(userId, topic) {
 module.exports.getDashboardData = (userId, topics, callback) => {
   if (!topics)
     callback(null, null);
-
+  
   var promises = [];
 
   for (var i = 0; i < topics.length; i++) { 
