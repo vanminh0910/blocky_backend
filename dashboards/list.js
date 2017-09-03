@@ -52,7 +52,7 @@ module.exports.listByUser = (event, context, callback) => {
 
         callback(null, utils.createResponse(200, null, 
         {
-          dashboard: dashboards.Items,
+          dashboards: dashboards.Items,
           data: data
         }));
       });  

@@ -6,6 +6,7 @@ const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
 
 function getTopicData(userId, topic) {
+  console.log(topic);
   return new Promise(function (resolve, reject) {
     var userIdTopic = userId + '_' + topic.topic;
     var limit = 500;
@@ -38,11 +39,15 @@ function getTopicData(userId, topic) {
       Limit: limit
     };
 
+    console.log(params);
+
     dynamodb.query(params, (error, result) => {
       if (error) {
         console.log(error);
         reject(error);
       }
+
+      console.log(result);
 
       topic.data = result.Items;
       resolve(topic);
@@ -51,8 +56,10 @@ function getTopicData(userId, topic) {
 }
 
 module.exports.getDashboardData = (userId, topics, callback) => {
-  if (!topics)
+  if (!topics) {
     callback(null, null);
+    return;
+  }
   
   var promises = [];
 

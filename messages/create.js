@@ -37,7 +37,7 @@ module.exports.create = (event, context, callback) => {
     } else {
       var user = result.Items[0];
 
-      if (input.topic == '/register') {
+      if (input.topic == 'register') {
         try {
           var deviceData = JSON.parse(input.data);
         } catch(e) {

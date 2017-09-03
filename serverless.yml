@@ -38,7 +38,7 @@ provider:
     PROVIDER_PROFILE: default
 
     USERS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-users
-    DEVICES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-devices
+    DEVICES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-devices-v2
     SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
     DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
     SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
@@ -52,14 +52,6 @@ provider:
     BROKER_PORT: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_PORT}
 
 custom:
-
-  # Crud-enabled env variables (for yml self-reference)
-  USERS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-users
-  DEVICES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-devices
-  SCRIPTS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-scripts
-  DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
-  SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
-  MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages-v3
   dynamodb:
     start:
       port: 8000
@@ -67,11 +59,6 @@ custom:
       migrate: true
     migration:
       dir: offline/migrations
-    seed:
-      users:
-        sources:
-          - table: ${self:custom.USERS_TABLE_NAME}
-            sources: [./offline/seed/users.json]
 
 functions:
 
@@ -375,7 +362,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.USERS_TABLE_NAME}
+        TableName: ${self:provider.environment.USERS_TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -414,7 +401,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.DEVICES_TABLE_NAME}
+        TableName: ${self:provider.environment.DEVICES_TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -448,7 +435,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.SCRIPTS_TABLE_NAME}
+        TableName: ${self:provider.environment.SCRIPTS_TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -468,7 +455,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.DASHBOARDS_TABLE_NAME}
+        TableName: ${self:provider.environment.DASHBOARDS_TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -488,7 +475,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.SETTINGS_TABLE_NAME}
+        TableName: ${self:provider.environment.SETTINGS_TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: name
             AttributeType: S
@@ -504,7 +491,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.MESSAGES_TABLE_NAME}
+        TableName: ${self:provider.environment.MESSAGES_TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: userIdTopic
             AttributeType: S
