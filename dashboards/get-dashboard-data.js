@@ -8,20 +8,30 @@ const utils = require('../lib/utils');
 function getTopicData(userId, topic) {
   console.log(topic);
   return new Promise(function (resolve, reject) {
+    if (!topic || !topic.dataType) {
+      console.log('Invalid topic is provided. Ignore data request for this topic.')
+      resolve({topic: topic, data: ''});
+    }
     var userIdTopic = userId + '_' + topic.topic;
     var limit = 500;
     var createdAtFilter = 0;
     
     if (topic.dataType == '1' || topic.dataType == 1) {
       limit = 1;
+    } else if (topic.dataType == '4h' ) {
+      createdAtFilter = utils.getEpochTime(0, 4);    
+    } else if (topic.dataType == '8h' ) {
+      createdAtFilter = utils.getEpochTime(0, 8);    
+    } else if (topic.dataType == '12h' ) {
+      createdAtFilter = utils.getEpochTime(0, 12);    
     } else if (topic.dataType == '1d' ) {
-      createdAtFilter = utils.getEpochTime(1);
+      createdAtFilter = utils.getEpochTime(1, 0);
     } else if (topic.dataType == '3d' ) {
-      createdAtFilter = utils.getEpochTime(3);
+      createdAtFilter = utils.getEpochTime(3, 0);
     } else if (topic.dataType == '1w' ) {
-      createdAtFilter = utils.getEpochTime(7);
+      createdAtFilter = utils.getEpochTime(7, 0);
     } else if (topic.dataType == '2w' ) {
-      createdAtFilter = utils.getEpochTime(14);
+      createdAtFilter = utils.getEpochTime(14, 0);
     }    
 
     var params = {

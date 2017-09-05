@@ -26,7 +26,7 @@ module.exports.update = (event, context, callback) => {
   dynamodb.get(getParams, (error, result) => {
     if (error) {
       console.error(error);
-      callback(null, utils.createResponse(500, 'An internal server error occurred '));
+      callback(null, utils.createResponse(500));
       return;
     }
 
@@ -40,6 +40,8 @@ module.exports.update = (event, context, callback) => {
       content: input.content,
       updatedAt: new Date().getTime()
     });
+
+    console.log(attributeUpdates);
 
     dynamodb.update({
       TableName: process.env.DASHBOARDS_TABLE_NAME,
@@ -57,47 +59,45 @@ module.exports.update = (event, context, callback) => {
       }
 
       if (input.subscribedTopics) {
-        var attributeUpdates = utils.toAttributeUpdates({
-          subscribedTopics: input.subscribedTopics,
+        attributeUpdates = utils.toAttributeUpdates({
+          subscribedTopics: JSON.stringify(input.subscribedTopics),
           updatedAt: new Date().getTime()
         });
+      } else {
+        attributeUpdates = utils.toAttributeUpdates({
+          subscribedTopics: '[]',
+          updatedAt: new Date().getTime()
+        });
+      }
   
-        dynamodb.update({
-          TableName: process.env.USERS_TABLE_NAME,
-          AttributeUpdates: attributeUpdates,
-          Key: {
-            id: userId
-          },
-          ReturnValues: 'ALL_NEW'
-        }, (error, result) => {
+      dynamodb.update({
+        TableName: process.env.USERS_TABLE_NAME,
+        AttributeUpdates: attributeUpdates,
+        Key: {
+          id: userId
+        },
+        ReturnValues: 'ALL_NEW'
+      }, (error, result) => {
+        if (error) {
+          console.error(error);
+          callback(null, utils.createResponse(500));
+          return;
+        }
+        // get dashboard data
+        getDashboardData(userId, input.subscribedTopics, function(error, data) {
           if (error) {
             console.error(error);
             callback(null, utils.createResponse(500));
             return;
           }
-          // get dashboard data
-          getDashboardData(userId, input.subscribedTopics, function(error, data) {
-            if (error) {
-              console.error(error);
-              callback(null, utils.createResponse(500));
-              return;
-            }
-  
-            callback(null, utils.createResponse(200, null, 
-            {
-              dashboard: dashboard.Attributes,
-              data: data
-            }));
-          });
-        }); 
-      } else {
-        callback(null, utils.createResponse(200, null, 
+
+          callback(null, utils.createResponse(200, null, 
           {
             dashboard: dashboard.Attributes,
-            data: ''
-          })
-        );
-      }
+            data: data
+          }));
+        });
+      }); 
     });  
   });
 }

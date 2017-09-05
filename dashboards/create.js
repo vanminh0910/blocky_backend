@@ -34,47 +34,47 @@ module.exports.create = (event, context, callback) => {
       return;
     }
 
+    var attributeUpdates = null;
+
     if (input.subscribedTopics) {
-      var attributeUpdates = utils.toAttributeUpdates({
-        subscribedTopics: input.subscribedTopics,
+      attributeUpdates = utils.toAttributeUpdates({
+        subscribedTopics: JSON.stringify(input.subscribedTopics),
         updatedAt: new Date().getTime()
       });
+    } else {
+      attributeUpdates = utils.toAttributeUpdates({
+        subscribedTopics: '[]',
+        updatedAt: new Date().getTime()
+      });
+    }
 
-      dynamodb.update({
-        TableName: process.env.USERS_TABLE_NAME,
-        AttributeUpdates: attributeUpdates,
-        Key: {
-          id: userId
-        },
-        ReturnValues: 'ALL_NEW'
-      }, (error, result) => {
+    dynamodb.update({
+      TableName: process.env.USERS_TABLE_NAME,
+      AttributeUpdates: attributeUpdates,
+      Key: {
+        id: userId
+      },
+      ReturnValues: 'ALL_NEW'
+    }, (error, result) => {
+      if (error) {
+        console.error(error);
+        callback(null, utils.createResponse(500));
+        return;
+      }
+      // get dashboard data
+      getDashboardData(userId, input.subscribedTopics, function(error, data) {
         if (error) {
           console.error(error);
           callback(null, utils.createResponse(500));
           return;
         }
-        // get dashboard data
-        getDashboardData(userId, input.subscribedTopics, function(error, data) {
-          if (error) {
-            console.error(error);
-            callback(null, utils.createResponse(500));
-            return;
-          }
 
-          callback(null, utils.createResponse(200, null, 
-          {
-            dashboard: params.Item,
-            data: data
-          }));
-        });
-      }); 
-    } else {
-      callback(null, utils.createResponse(200, null, 
+        callback(null, utils.createResponse(200, null, 
         {
           dashboard: params.Item,
-          data: ''
-        })
-      );
-    }
+          data: data
+        }));
+      });
+    });
   });
 };

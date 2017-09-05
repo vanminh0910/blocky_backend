@@ -39,11 +39,28 @@ module.exports.listByUser = (event, context, callback) => {
       }
   
       if (!result.Item) {
-        callback(null, utils.createResponse(500));
+        callback(null, utils.createResponse(400, 'Invalid user'));
+        return;
       }
+
+      var subscribedTopics = null;
+
+      try {
+        console.log(result.Item.subscribedTopics);
+        subscribedTopics = JSON.parse(result.Item.subscribedTopics);
+      } catch(e) {
+        console.log('Error parsing user subscribed topics.');
+        console.log(e);
+        callback(null, utils.createResponse(200, null, 
+          {
+            dashboards: dashboards.Items,
+            data: ''
+          }));
+        return;
+      }      
   
       // get dashboard data
-      getDashboardData(userId, result.Item.subscribedTopics, function(error, data) {
+      getDashboardData(userId, subscribedTopics, function(error, data) {
         if (error) {
           console.error(error);
           callback(null, utils.createResponse(500));
