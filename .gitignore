@@ -59,3 +59,4 @@ typings/
 staging.env.yml
 prod.env.yml
 
+/api_info.txt

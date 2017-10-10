@@ -88,8 +88,8 @@ module.exports.process = (event, context, callback) => {
         var params = {
           TableName: process.env.MESSAGES_TABLE_NAME,
           Item: {
-            userIdTopic: user.id + '_' + parsedTopic,
-            userId: user.id,
+            userIdTopic: foundUser.id + '_' + parsedTopic,
+            userId: foundUser.id,
             topic: parsedTopic,
             data : input.data || ' ',
             createdAt: timestamp

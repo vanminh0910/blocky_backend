@@ -9,3 +9,6 @@ sls dynamodb install
 sls dynamodb migrate
 sls dynamodb seed
 sls dynamodb start --seed users
+
+# deploy
+sls deploy --stage staging
