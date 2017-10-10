@@ -78,6 +78,14 @@ functions:
          private: true
          cors: true
   
+  MessagesProcess:
+    handler : messages/process.process
+    events :
+      - http: 
+         path : messages/process
+         method : post
+         private: true
+         cors: true
   #==========================
   # Users Methods
   #==========================

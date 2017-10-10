@@ -1,7 +1,10 @@
 # blocky_backend
 Backend for blocky
 
-# dynamodb local
+# start server
+sls offline start --host 0.0.0.0
+
+# start only dynamodb local
 sls dynamodb install
 sls dynamodb migrate
 sls dynamodb seed

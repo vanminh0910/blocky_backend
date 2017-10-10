@@ -1,0 +1,4567 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket"
+    },
+    "AuthLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-auth"
+      }
+    },
+    "MessagesCreateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-MessagesCreate"
+      }
+    },
+    "UsersSignupLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-UsersSignup"
+      }
+    },
+    "UsersLoginLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-UsersLogin"
+      }
+    },
+    "UsersChangePasswordLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-UsersChangePassword"
+      }
+    },
+    "UsersChangeAuthKeyLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-UsersChangeAuthKey"
+      }
+    },
+    "UsersValidateAuthKeyLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-UsersValidateAuthKey"
+      }
+    },
+    "UsersGetProfileLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-UsersGetProfile"
+      }
+    },
+    "UsersChangeProfileLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-UsersChangeProfile"
+      }
+    },
+    "DevicesCreateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DevicesCreate"
+      }
+    },
+    "DevicesReadAllLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DevicesReadAll"
+      }
+    },
+    "DevicesGetLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DevicesGet"
+      }
+    },
+    "DevicesUpdateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DevicesUpdate"
+      }
+    },
+    "DevicesDeleteLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DevicesDelete"
+      }
+    },
+    "DevicesUpdateStatusLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DevicesUpdateStatus"
+      }
+    },
+    "ScriptsCreateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-ScriptsCreate"
+      }
+    },
+    "ScriptsReadAllLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-ScriptsReadAll"
+      }
+    },
+    "ScriptsGetLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-ScriptsGet"
+      }
+    },
+    "ScriptsUpdateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-ScriptsUpdate"
+      }
+    },
+    "ScriptsDeleteLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-ScriptsDelete"
+      }
+    },
+    "DashboardsCreateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DashboardsCreate"
+      }
+    },
+    "DashboardsReadAllLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DashboardsReadAll"
+      }
+    },
+    "DashboardsGetLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DashboardsGet"
+      }
+    },
+    "DashboardsUpdateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DashboardsUpdate"
+      }
+    },
+    "DashboardsDeleteLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/blocky-backend-dev-DashboardsDelete"
+      }
+    },
+    "IamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "blocky-backend",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-auth:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-MessagesCreate:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersSignup:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersLogin:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersChangePassword:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersChangeAuthKey:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersValidateAuthKey:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersGetProfile:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersChangeProfile:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesCreate:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesReadAll:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesGet:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesUpdate:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesDelete:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesUpdateStatus:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsCreate:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsReadAll:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsGet:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsUpdate:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsDelete:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsCreate:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsReadAll:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsGet:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsUpdate:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsDelete:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-auth:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-MessagesCreate:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersSignup:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersLogin:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersChangePassword:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersChangeAuthKey:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersValidateAuthKey:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersGetProfile:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-UsersChangeProfile:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesCreate:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesReadAll:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesGet:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesUpdate:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesDelete:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DevicesUpdateStatus:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsCreate:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsReadAll:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsGet:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsUpdate:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-ScriptsDelete:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsCreate:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsReadAll:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsGet:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsUpdate:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/blocky-backend-dev-DashboardsDelete:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:*"
+                  ],
+                  "Resource": "arn:aws:dynamodb:*:*:*"
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "blocky-backend",
+              "dev",
+              "us-east-1",
+              "lambdaRole"
+            ]
+          ]
+        }
+      }
+    },
+    "AuthLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-auth",
+        "Handler": "lib/auth.auth",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "AuthLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "MessagesCreateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-MessagesCreate",
+        "Handler": "messages/create.create",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "MessagesCreateLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UsersSignupLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-UsersSignup",
+        "Handler": "users/signup.signup",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "UsersSignupLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UsersLoginLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-UsersLogin",
+        "Handler": "users/login.login",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "UsersLoginLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UsersChangePasswordLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-UsersChangePassword",
+        "Handler": "users/change-password.changePassword",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "UsersChangePasswordLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UsersChangeAuthKeyLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-UsersChangeAuthKey",
+        "Handler": "users/change-auth-key.changeAuthKey",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "UsersChangeAuthKeyLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UsersValidateAuthKeyLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-UsersValidateAuthKey",
+        "Handler": "users/validate-auth-key.validateAuthKey",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "UsersValidateAuthKeyLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UsersGetProfileLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-UsersGetProfile",
+        "Handler": "users/get-profile.getProfile",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "UsersGetProfileLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UsersChangeProfileLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-UsersChangeProfile",
+        "Handler": "users/change-profile.changeProfile",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "UsersChangeProfileLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DevicesCreateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DevicesCreate",
+        "Handler": "devices/create.create",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DevicesCreateLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DevicesReadAllLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DevicesReadAll",
+        "Handler": "devices/list.listByUser",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DevicesReadAllLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DevicesGetLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DevicesGet",
+        "Handler": "devices/get.get",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DevicesGetLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DevicesUpdateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DevicesUpdate",
+        "Handler": "devices/update.update",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DevicesUpdateLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DevicesDeleteLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DevicesDelete",
+        "Handler": "devices/delete.delete",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DevicesDeleteLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DevicesUpdateStatusLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DevicesUpdateStatus",
+        "Handler": "devices/updateStatus.updateStatus",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DevicesUpdateStatusLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ScriptsCreateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-ScriptsCreate",
+        "Handler": "scripts/create.create",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "ScriptsCreateLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ScriptsReadAllLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-ScriptsReadAll",
+        "Handler": "scripts/list.listByUser",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "ScriptsReadAllLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ScriptsGetLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-ScriptsGet",
+        "Handler": "scripts/get.get",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "ScriptsGetLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ScriptsUpdateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-ScriptsUpdate",
+        "Handler": "scripts/update.update",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "ScriptsUpdateLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ScriptsDeleteLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-ScriptsDelete",
+        "Handler": "scripts/delete.delete",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "ScriptsDeleteLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DashboardsCreateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DashboardsCreate",
+        "Handler": "dashboards/create.create",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DashboardsCreateLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DashboardsReadAllLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DashboardsReadAll",
+        "Handler": "dashboards/list.listByUser",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DashboardsReadAllLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DashboardsGetLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DashboardsGet",
+        "Handler": "dashboards/get.get",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DashboardsGetLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DashboardsUpdateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DashboardsUpdate",
+        "Handler": "dashboards/update.update",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DashboardsUpdateLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DashboardsDeleteLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/blocky-backend/dev/1504510567915-2017-09-04T07:36:07.915Z/blocky-backend.zip"
+        },
+        "FunctionName": "blocky-backend-dev-DashboardsDelete",
+        "Handler": "dashboards/delete.delete",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "SERVICE": "blocky_backend",
+            "PROVIDER_NAME": "aws",
+            "PROVIDER_RUNTIME": "nodejs6.10",
+            "PROVIDER_STAGE": "dev",
+            "PROVIDER_REGION": "us-east-1",
+            "PROVIDER_PROFILE": "default",
+            "USERS_TABLE_NAME": "blocky-backend-dev-users",
+            "DEVICES_TABLE_NAME": "blocky-backend-dev-devices-v2",
+            "SCRIPTS_TABLE_NAME": "blocky-backend-dev-scripts",
+            "DASHBOARDS_TABLE_NAME": "blocky-backend-dev-dashboards",
+            "SETTINGS_TABLE_NAME": "blocky-backend-dev-settings",
+            "MESSAGES_TABLE_NAME": "blocky-backend-dev-messages-v3",
+            "JWT_SECRET_KEY": "secret in dev",
+            "BROKER_NAME": "broker",
+            "BROKER_EMAIL": "broker",
+            "BROKER_PASSWORD": "broker",
+            "BROKER_URL": "localhost",
+            "BROKER_PORT": "1883"
+          }
+        }
+      },
+      "DependsOn": [
+        "DashboardsDeleteLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ApiGatewayRestApi": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "dev-blocky-backend"
+      }
+    },
+    "ApiGatewayResourceMessages": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "messages",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsers": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "users",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceDevices": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "devices",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceScripts": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "scripts",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceDashboards": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "dashboards",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersSignup": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "signup",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersLogin": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "login",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersPassword": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "password",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersChangeauthkey": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "changeAuthKey",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersValidateauthkey": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "validateAuthKey",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersProfile": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "profile",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceDevicesIdVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceDevices"
+        },
+        "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceDevicesStatus": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceDevices"
+        },
+        "PathPart": "status",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceScriptsIdVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceScripts"
+        },
+        "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceDashboardsIdVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceDashboards"
+        },
+        "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodMessagesOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceMessages"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersSignupOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersSignup"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersLoginOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersLogin"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersPasswordOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersPassword"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersChangeauthkeyOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersChangeauthkey"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersValidateauthkeyOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersValidateauthkey"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersProfileOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST,GET'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersProfile"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodDevicesOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevices"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodDevicesIdVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PUT,GET'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevicesIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodDevicesStatusOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevicesStatus"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodScriptsOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceScripts"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodScriptsIdVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PUT,GET'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceScriptsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodDashboardsOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDashboards"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodDashboardsIdVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PUT,GET'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDashboardsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodMessagesPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceMessages"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": true,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "MessagesCreateLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodUsersSignupPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersSignup"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UsersSignupLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodUsersLoginPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersLogin"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UsersLoginLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodUsersPasswordPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersPassword"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UsersChangePasswordLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodUsersChangeauthkeyPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersChangeauthkey"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UsersChangeAuthKeyLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodUsersValidateauthkeyPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersValidateauthkey"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": true,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UsersValidateAuthKeyLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodUsersProfileGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersProfile"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UsersGetProfileLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodUsersProfilePost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersProfile"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UsersChangeProfileLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDevicesPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevices"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DevicesCreateLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDevicesGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevices"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DevicesReadAllLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDevicesIdVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevicesIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DevicesGetLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDevicesIdVarPut": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevicesIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DevicesUpdateLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDevicesIdVarDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevicesIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DevicesDeleteLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDevicesStatusPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDevicesStatus"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": true,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DevicesUpdateStatusLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodScriptsPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceScripts"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ScriptsCreateLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodScriptsGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceScripts"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ScriptsReadAllLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodScriptsIdVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceScriptsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ScriptsGetLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodScriptsIdVarPut": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceScriptsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ScriptsUpdateLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodScriptsIdVarDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceScriptsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ScriptsDeleteLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDashboardsPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDashboards"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DashboardsCreateLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDashboardsGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDashboards"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DashboardsReadAllLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDashboardsIdVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDashboardsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DashboardsGetLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDashboardsIdVarPut": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDashboardsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DashboardsUpdateLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodDashboardsIdVarDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDashboardsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DashboardsDeleteLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
+    },
+    "AuthApiGatewayAuthorizer": {
+      "Type": "AWS::ApiGateway::Authorizer",
+      "Properties": {
+        "AuthorizerResultTtlInSeconds": 0,
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "auth",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizerUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "AuthLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "/invocations"
+            ]
+          ]
+        },
+        "Type": "TOKEN"
+      }
+    },
+    "ApiGatewayDeployment1504510571862": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "StageName": "dev"
+      },
+      "DependsOn": [
+        "ApiGatewayMethodMessagesPost",
+        "ApiGatewayMethodUsersSignupPost",
+        "ApiGatewayMethodUsersLoginPost",
+        "ApiGatewayMethodUsersPasswordPost",
+        "ApiGatewayMethodUsersChangeauthkeyPost",
+        "ApiGatewayMethodUsersValidateauthkeyPost",
+        "ApiGatewayMethodUsersProfileGet",
+        "ApiGatewayMethodUsersProfilePost",
+        "ApiGatewayMethodDevicesPost",
+        "ApiGatewayMethodDevicesGet",
+        "ApiGatewayMethodDevicesIdVarGet",
+        "ApiGatewayMethodDevicesIdVarPut",
+        "ApiGatewayMethodDevicesIdVarDelete",
+        "ApiGatewayMethodDevicesStatusPost",
+        "ApiGatewayMethodScriptsPost",
+        "ApiGatewayMethodScriptsGet",
+        "ApiGatewayMethodScriptsIdVarGet",
+        "ApiGatewayMethodScriptsIdVarPut",
+        "ApiGatewayMethodScriptsIdVarDelete",
+        "ApiGatewayMethodDashboardsPost",
+        "ApiGatewayMethodDashboardsGet",
+        "ApiGatewayMethodDashboardsIdVarGet",
+        "ApiGatewayMethodDashboardsIdVarPut",
+        "ApiGatewayMethodDashboardsIdVarDelete"
+      ]
+    },
+    "ApiGatewayApiKey1": {
+      "Type": "AWS::ApiGateway::ApiKey",
+      "Properties": {
+        "Enabled": true,
+        "Name": "dev-blocky-brokerAPIKey",
+        "StageKeys": [
+          {
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "StageName": "dev"
+          }
+        ]
+      },
+      "DependsOn": "ApiGatewayDeployment1504510571862"
+    },
+    "MessagesCreateLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MessagesCreateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UsersSignupLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UsersSignupLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UsersLoginLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UsersLoginLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UsersChangePasswordLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UsersChangePasswordLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "AuthLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AuthLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com"
+      }
+    },
+    "UsersChangeAuthKeyLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UsersChangeAuthKeyLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UsersValidateAuthKeyLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UsersValidateAuthKeyLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UsersGetProfileLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UsersGetProfileLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UsersChangeProfileLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UsersChangeProfileLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DevicesCreateLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DevicesCreateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DevicesReadAllLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DevicesReadAllLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DevicesGetLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DevicesGetLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DevicesUpdateLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DevicesUpdateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DevicesDeleteLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DevicesDeleteLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DevicesUpdateStatusLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DevicesUpdateStatusLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ScriptsCreateLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ScriptsCreateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ScriptsReadAllLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ScriptsReadAllLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ScriptsGetLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ScriptsGetLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ScriptsUpdateLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ScriptsUpdateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ScriptsDeleteLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ScriptsDeleteLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DashboardsCreateLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DashboardsCreateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DashboardsReadAllLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DashboardsReadAllLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DashboardsGetLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DashboardsGetLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DashboardsUpdateLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DashboardsUpdateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DashboardsDeleteLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DashboardsDeleteLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UsersDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "TableName": "blocky-backend-dev-users",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "email",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "authKey",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "UsersEmailIndex",
+            "KeySchema": [
+              {
+                "AttributeName": "email",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 1,
+              "WriteCapacityUnits": 1
+            }
+          },
+          {
+            "IndexName": "UsersAuthKeyIndex",
+            "KeySchema": [
+              {
+                "AttributeName": "authKey",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 1,
+              "WriteCapacityUnits": 1
+            }
+          }
+        ]
+      }
+    },
+    "DevicesDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "TableName": "blocky-backend-dev-devices-v2",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "ownerId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "chipId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "ownerId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "DevicesChipIdOwnerIdIndex",
+            "KeySchema": [
+              {
+                "AttributeName": "chipId",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "ownerId",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 1,
+              "WriteCapacityUnits": 1
+            }
+          }
+        ]
+      }
+    },
+    "ScriptsDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "TableName": "blocky-backend-dev-scripts",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "ownerId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "ownerId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        }
+      }
+    },
+    "DashboardsDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "TableName": "blocky-backend-dev-dashboards",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "ownerId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "ownerId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        }
+      }
+    },
+    "SettingsDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "TableName": "blocky-backend-dev-settings",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "name",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "name",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        }
+      }
+    },
+    "MessagesDynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "TableName": "blocky-backend-dev-messages-v3",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "userIdTopic",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "createdAt",
+            "AttributeType": "N"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "userIdTopic",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "createdAt",
+            "KeyType": "RANGE"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": {
+        "Ref": "ServerlessDeploymentBucket"
+      }
+    },
+    "ServiceEndpoint": {
+      "Description": "URL of the service endpoint",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ApiGatewayRestApi"
+            },
+            ".execute-api.us-east-1.amazonaws.com/dev"
+          ]
+        ]
+      }
+    }
+  }
+}
