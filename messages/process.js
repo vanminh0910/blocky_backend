@@ -78,12 +78,16 @@ module.exports.process = (event, context, callback) => {
           return;
         }
       })
+    } else {
+      callback(null, utils.createResponse(200));
+      return;
     }
   } else if (input.topic.startsWith(input.authKey + '/user/')) { //handle user message
     var parsedTopic = input.topic.replace(input.authKey + '/user/', '');
     findUserByAuthKey(input.authKey, function(err, foundUser) {
       if (err) {
         callback(null, utils.createResponse(404, 'Authentication key not found'));
+        return;
       } else {
         var params = {
           TableName: process.env.MESSAGES_TABLE_NAME,
@@ -108,6 +112,8 @@ module.exports.process = (event, context, callback) => {
         return;
       }
     })
-  }  
+  } else {
+    callback(null, utils.createResponse(200));
+  }
 };
 
