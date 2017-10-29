@@ -61,12 +61,25 @@ module.exports.signup = (event, context, callback) => {
             return;
           }
 
-          params.Item.password = ''; // Filter sensitive data
+          var user = params.Item;
+          user.password = ''; // Filter sensitive data
 
           callback(null, utils.createResponse(200, null, {
-            token: utils.generateToken(params.Item), 
-            user: params.Item
+            token: utils.generateToken(user), 
+            user: user
           }));
+
+          const mailOptions = {
+            to: user.email,
+            from: config.emailSender,
+            template: 'register-email',
+            subject: 'Blocky - Your account has been activated',
+            context: {
+              name: user.name,
+              webAppUrl: config.webAppUrl
+            }
+          };
+          utils.sendMail(mailOptions);
         });
       }
     }

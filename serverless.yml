@@ -50,6 +50,7 @@ provider:
     BROKER_PASSWORD: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_PASSWORD}
     BROKER_URL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_URL}
     BROKER_PORT: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_PORT}
+    WEB_APP_URL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.WEB_APP_URL}
 
 custom:
   dynamodb:
@@ -103,6 +104,22 @@ functions:
     events:
       - http:
           path: users/login
+          method: post
+          cors: true
+
+  UsersForgotPassword:
+    handler: users/forgot-password.forgotPassword
+    events:
+      - http:
+          path: users/forgotPassword
+          method: post
+          cors: true
+
+  UsersResetPassword:
+    handler: users/reset-password.resetPassword
+    events:
+      - http:
+          path: users/resetPassword
           method: post
           cors: true
 
@@ -378,6 +395,8 @@ resources:
             AttributeType: S
           - AttributeName: authKey
             AttributeType: S
+          - AttributeName: resetToken
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -397,6 +416,15 @@ resources:
         - IndexName: UsersAuthKeyIndex
           KeySchema:
           - AttributeName: authKey
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: UsersResetTokenIndex
+          KeySchema:
+          - AttributeName: resetToken
             KeyType: HASH
           Projection:
             ProjectionType: ALL

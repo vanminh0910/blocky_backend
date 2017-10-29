@@ -15,7 +15,7 @@ module.exports.changePassword = (event, context, callback) => {
   const input = JSON.parse(event.body);
 
   if (!input.password || !input.newPassword) {
-    callback(null, utils.createResponse(400, 'Please enter valid password'));
+    callback(null, utils.createResponse(400, 'Please enter a valid password'));
     return;
   }
 
@@ -35,7 +35,7 @@ module.exports.changePassword = (event, context, callback) => {
 
     const isValidUser = result.Item && bcrypt.compareSync(input.password, result.Item.password);
     if (!isValidUser) {
-      callback(null, utils.createResponse(400, 'Please enter valid password'));
+      callback(null, utils.createResponse(400, 'Please enter a valid password'));
       return;
     }
 
