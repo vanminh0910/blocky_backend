@@ -50,8 +50,9 @@ module.exports.resetPassword = (event, context, callback) => {
         ExpressionAttributeValues: {
           ':newPassword': bcrypt.hashSync(input.newPassword),
           ':updatedAt': new Date().getTime(),
+          ':resetTokenExpiry': 0
         },
-        UpdateExpression: 'SET #password = :newPassword, updatedAt = :updatedAt',
+        UpdateExpression: 'SET #password = :newPassword, updatedAt = :updatedAt, resetTokenExpiry = :resetTokenExpiry',
         ReturnValues: 'NONE',
       };
 
@@ -61,13 +62,6 @@ module.exports.resetPassword = (event, context, callback) => {
           callback(null, utils.createResponse(500, 'An internal server error occurred'));
           return;
         }
-
-        user.password = '';
-
-        callback(null, utils.createResponse(200, null, {
-          token: utils.generateToken(user),
-          user: user
-        }));
 
         const mailOptions = {
           to: user.email,
@@ -80,6 +74,13 @@ module.exports.resetPassword = (event, context, callback) => {
           }
         };
         utils.sendMail(mailOptions);
+
+        user.password = '';
+        callback(null, utils.createResponse(200, null, {
+          token: utils.generateToken(user),
+          user: user
+        }));
+        return;
       });
     }
   });

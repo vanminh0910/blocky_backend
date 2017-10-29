@@ -51,6 +51,8 @@ provider:
     BROKER_URL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_URL}
     BROKER_PORT: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_PORT}
     WEB_APP_URL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.WEB_APP_URL}
+    ACCESS_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.ACCESS_KEY}
+    SECRET_ACCESS_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.SECRET_ACCESS_KEY}
 
 custom:
   dynamodb:

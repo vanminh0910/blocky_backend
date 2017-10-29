@@ -57,8 +57,6 @@ module.exports.forgotPassword = (event, context, callback) => {
             return;
           }
 
-          callback(null, utils.createResponse(200, null, {}));
-
           const mailOptions = {
             to: user.email,
             from: config.emailSender,
@@ -71,6 +69,9 @@ module.exports.forgotPassword = (event, context, callback) => {
             }
           };
           utils.sendMail(mailOptions);
+
+          callback(null, utils.createResponse(200, null, {}));
+          return;
         });
       });
     }
