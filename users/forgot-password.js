@@ -31,7 +31,7 @@ module.exports.forgotPassword = (event, context, callback) => {
     }
 
     if (result.Count != 1) {
-      callback(null, utils.createResponse(400, 'Please enter valid email'));
+      callback(null, utils.createResponse(200, null, {}));
       return;
     } else {
       const user = result.Items[0];
