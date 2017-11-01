@@ -57,6 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 staging.env.yml
+staging2.env.yml
 prod.env.yml
 
 /api_info.txt
+.serverless/
