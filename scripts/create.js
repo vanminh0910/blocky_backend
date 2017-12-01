@@ -28,6 +28,7 @@ module.exports.create = (event, context, callback) => {
       lua: input.lua,
       mode: input.mode,
       ownerId: userId,
+      isPublic: input.isPublic,
       createdAt: timestamp,
       updatedAt: timestamp,
     }),

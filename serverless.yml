@@ -380,6 +380,18 @@ functions:
             resultTtlInSeconds: 0
           cors: true
 
+  #==========================
+  # Share Public Content Methods
+  #==========================
+
+  # Get shared script
+  ScriptsGetPublic:
+    handler: scripts/get-public.getPublic
+    events:
+      - http:
+          path: share/scripts/{id}
+          method: get
+          cors: true
 
 resources:
   Resources:
@@ -487,6 +499,16 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+        - IndexName: ScriptsIdIndex
+          KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
 
     # dashboards dynamodb table resource
     DashboardsDynamoDBTable:
