@@ -26,6 +26,7 @@ module.exports.create = (event, context, callback) => {
       name: input.name,
       xml: input.xml,
       lua: input.lua,
+      python: input.python,
       mode: input.mode,
       ownerId: userId,
       isPublic: input.isPublic,

@@ -45,6 +45,7 @@ module.exports.update = (event, context, callback) => {
       name: input.name,
       xml: input.xml,
       lua: input.lua,
+      python: input.python,
       mode: input.mode,
       isPublic: input.isPublic,
       updatedAt: new Date().getTime()
