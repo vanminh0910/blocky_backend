@@ -1,12 +1,6 @@
 'use strict';
 
 const uuid = require('uuid');
-const shortid = require('shortid');
-const validator = require('validator');
-const bcrypt = require('bcrypt-nodejs');
-const jwt = require('jsonwebtoken');
-const config = require('../lib/config');
-const constants = require('../lib/constants');
 const dynamodb = require('../lib/dynamodb');
 const utils = require('../lib/utils');
 var _ = require('underscore');
@@ -16,13 +10,13 @@ module.exports.delete = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const userId = event.requestContext.authorizer.principalId;
   const getParams = {
-    TableName: process.env.SCRIPTS_TABLE_NAME,
+    TableName: process.env.RULES_TABLE_NAME,
     Key: {
       id: event.pathParameters.id,
       ownerId: userId,
     },
   };
-  
+
   dynamodb.get(getParams, (error, result) => {
     if (error) {
       console.error(error);
@@ -31,19 +25,19 @@ module.exports.delete = (event, context, callback) => {
     }
 
     if (_.isEmpty(result)) {
-      callback(null, utils.createResponse(400, 'Script not exist'));
+      callback(null, utils.createResponse(400, 'Rule not exist'));
       return;
     }
 
     const params = {
-      TableName: process.env.SCRIPTS_TABLE_NAME,
+      TableName: process.env.RULES_TABLE_NAME,
       Key: {
         id: event.pathParameters.id,
         ownerId: userId,
       },
-      ConditionExpression: "id = :deletedScriptId",
+      ConditionExpression: "id = :deletedRuleId",
       ExpressionAttributeValues: {
-        ":deletedScriptId": event.pathParameters.id
+        ":deletedRuleId": event.pathParameters.id
       },
     };
 

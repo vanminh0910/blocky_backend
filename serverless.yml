@@ -43,6 +43,7 @@ provider:
     DASHBOARDS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-dashboards
     SETTINGS_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-settings
     MESSAGES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-messages-v3
+    RULES_TABLE_NAME: ${self:service}-${opt:stage, self:provider.stage}-rules
 
     JWT_SECRET_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.JWT_SECRET_KEY}
     BROKER_NAME: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.BROKER_NAME}
@@ -381,6 +382,70 @@ functions:
           cors: true
 
   #==========================
+  # Rules Methods
+  #==========================
+
+  # Create
+  RulesCreate:
+    handler: rules/create.create
+    events:
+      - http:
+          path: rules
+          method: post
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
+
+  # ReadAll
+  RulesReadAll:
+    handler: rules/list.listByUser
+    events:
+      - http:
+          path: rules
+          method: get
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
+
+  # Read
+  RulesGet:
+    handler: rules/get.get
+    events:
+      - http:
+          path: rules/{id}
+          method: get
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
+
+  # Update
+  RulesUpdate:
+    handler: rules/update.update
+    events:
+      - http:
+          path: rules/{id}
+          method: put
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
+
+  # Delete
+  RulesDelete:
+    handler: rules/delete.delete
+    events:
+      - http:
+          path: rules/{id}
+          method: delete
+          authorizer:
+            name: auth
+            resultTtlInSeconds: 0
+          cors: true
+
+  #==========================
   # Share Public Content Methods
   #==========================
 
@@ -530,7 +595,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
-    # dashboards dynamodb table resource
+    # settings dynamodb table resource
     SettingsDynamoDBTable:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
@@ -561,6 +626,26 @@ resources:
           - AttributeName: userIdTopic
             KeyType: HASH
           - AttributeName: createdAt
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    # rules dynamodb table resource
+    RulesDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.RULES_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: ownerId
+            AttributeType: S
+        KeySchema:
+          - AttributeName : ownerId
+            KeyType: HASH
+          - AttributeName: id
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
