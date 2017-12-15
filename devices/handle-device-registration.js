@@ -66,7 +66,7 @@ module.exports.handleDeviceRegistration = (userId, deviceData, callback) => {
         Item: {
           id: uuid.v1(),
           chipId : deviceData.chipId.toString(),
-          name: deviceData.type + '_' + deviceData.chipId,
+          name: deviceData.name || (deviceData.type + '_' + deviceData.chipId),
           status : constants.STATUS_ONLINE,
           ownerId: userId,
           type: deviceData.type,
