@@ -34,6 +34,7 @@ module.exports.handleDeviceRegistration = (userId, deviceData, callback) => {
       // device exists, update status to online
       var attributeUpdates = utils.toAttributeUpdates({
         status: constants.STATUS_ONLINE,
+        name: deviceData.name,
         updatedAt: new Date().getTime()
       });    
   
