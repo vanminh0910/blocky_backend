@@ -6,6 +6,7 @@ const utils = require('../lib/utils');
 const constants = require('../lib/constants');
 const handleDeviceRegistration = require('../devices/handle-device-registration').handleDeviceRegistration;
 const handleDeviceOffline = require('../devices/handle-device-offline').handleDeviceOffline;
+const handleRuleEvents = require('../rules/handle-rule-events').handleRuleEvents;
 
 function findUserByAuthKey(authKey, callback) {
   // lookup auth key to find user
@@ -48,6 +49,12 @@ module.exports.process = (event, context, callback) => {
         if (err) {
           callback(null, utils.createResponse(404, 'Authentication key not found'));
         } else {
+          handleRuleEvents(foundUser.id, payload, function(error, result) {
+            if (error) {
+              console.log(err);
+            }
+          });
+
           handleDeviceRegistration(foundUser.id, payload, function(error, result) {
             if (error) {
               console.log(err);
@@ -66,6 +73,11 @@ module.exports.process = (event, context, callback) => {
         if (err) {
           callback(null, utils.createResponse(404, 'Authentication key not found'));
         } else {
+          handleRuleEvents(foundUser.id, payload, function(error, result) {
+            if (error) {
+              console.log(err);
+            }
+          });
           handleDeviceOffline(foundUser.id, payload, function(error, result) {
             if (error) {
               console.log(err);
@@ -89,6 +101,12 @@ module.exports.process = (event, context, callback) => {
         callback(null, utils.createResponse(404, 'Authentication key not found'));
         return;
       } else {
+        handleRuleEvents(foundUser.id, input.data, function(error, result) {
+          if (error) {
+            console.log(err);
+          }
+        });
+        
         var params = {
           TableName: process.env.MESSAGES_TABLE_NAME,
           Item: {
