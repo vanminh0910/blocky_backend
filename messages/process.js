@@ -101,7 +101,11 @@ module.exports.process = (event, context, callback) => {
         callback(null, utils.createResponse(404, 'Authentication key not found'));
         return;
       } else {
-        handleRuleEvents(foundUser.id, input.data, function(error, result) {
+        var payload = {
+          topic: parsedTopic,
+          message: input.data
+        };
+        handleRuleEvents(foundUser.id, payload, function(error, result) {
           if (error) {
             console.log(err);
           }
