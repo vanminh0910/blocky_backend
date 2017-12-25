@@ -55,9 +55,9 @@ module.exports.handleRuleEvents = (userId, data, callback) => {
 
               var ruleMqttTopicList = utils.getStrBetween(code, '{{blocky_data_mqtt|', '}}');
               var subcribedTopics = [];
-              for (var i = 0; i < ruleMqttTopicList.length; i++) {
+              for (var j = 0; j < ruleMqttTopicList.length; j++) {
                 subcribedTopics.push({
-                  topic: ruleMqttTopicList[i],
+                  topic: ruleMqttTopicList[j],
                   dataType: 1
                 });
               }
@@ -66,9 +66,15 @@ module.exports.handleRuleEvents = (userId, data, callback) => {
                   if (error) {
                     console.error(error);
                   } else {
-                    for (var i = 0; i < data.length; i++) {
-                      var topic = data[i].topic;
-                      var message = data[i].data[0].data;
+                    for (var k = 0; k < data.length; k++) {
+                      var topic = '';
+                      var message = '';
+                      if (typeof data[k].topic != 'undefined') {
+                        topic = data[k].topic;
+                      }
+                      if (data[k].data.length && typeof data[k].data[0].data != 'undefined') {
+                        message = data[k].data[0].data;
+                      }
                       code = code.split('{{blocky_data_mqtt|' + topic + '}}').join('"' + message + '"');
                     }
                     processRule(code);
