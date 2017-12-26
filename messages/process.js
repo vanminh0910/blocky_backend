@@ -49,6 +49,7 @@ module.exports.process = (event, context, callback) => {
         if (err) {
           callback(null, utils.createResponse(404, 'Authentication key not found'));
         } else {
+          payload.authKey = input.authKey;
           handleRuleEvents(foundUser.id, payload, function(error, result) {
             if (error) {
               console.log(err);
@@ -73,6 +74,7 @@ module.exports.process = (event, context, callback) => {
         if (err) {
           callback(null, utils.createResponse(404, 'Authentication key not found'));
         } else {
+          payload.authKey = input.authKey;
           handleRuleEvents(foundUser.id, payload, function(error, result) {
             if (error) {
               console.log(err);
@@ -105,6 +107,7 @@ module.exports.process = (event, context, callback) => {
           topic: parsedTopic,
           message: input.data
         };
+        payload.authKey = input.authKey;
         handleRuleEvents(foundUser.id, payload, function(error, result) {
           if (error) {
             console.log(err);

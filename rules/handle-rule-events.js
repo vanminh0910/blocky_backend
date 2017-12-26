@@ -108,6 +108,7 @@ module.exports.handleRuleEvents = (userId, data, callback) => {
 
     try {
       var actions = vm.run(code);
+      var outputTopics = [];
       for (var i = 0; i < actions.length; i++) {
         if (actions[i].type == 'action.email') {
           var mailOptions = {
@@ -121,7 +122,38 @@ module.exports.handleRuleEvents = (userId, data, callback) => {
             }
           };
           utils.sendMail(mailOptions);
+        } else if (actions[i].type == 'action.mqtt') {
+          outputTopics.push({
+            topic: actions[i].configuration.topic,
+            message: actions[i].configuration.message
+          });
         }
+      }
+
+      if (outputTopics.length) {
+        var mqtt = require('mqtt');
+        var options = {
+          port: config.mqttPort,
+          host: config.mqttHost,
+          username: '',
+          password: 'rJy9dGo3b',
+          connectTimeout: 30 * 1000
+        };
+        var client = mqtt.connect(config.mqttUrl, options);
+
+        client.on('connect', function () {
+          var count = 0;
+          for (var i = 0; i < outputTopics.length; i++) {
+            var topic = data.authKey + '/user/' + outputTopics[i].topic;
+            var message = outputTopics[i].message;
+            client.publish(topic, message, function () {
+              count++;
+              if (count == outputTopics.length) {
+                client.end();
+              }
+            });
+          }
+        });
       }
 
     } catch (e) {

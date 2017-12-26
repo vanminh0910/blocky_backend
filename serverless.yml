@@ -54,6 +54,9 @@ provider:
     WEB_APP_URL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.WEB_APP_URL}
     ACCESS_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.ACCESS_KEY}
     SECRET_ACCESS_KEY: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.SECRET_ACCESS_KEY}
+    MQTT_URL: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.MQTT_URL}
+    MQTT_HOST: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.MQTT_HOST}
+    MQTT_PORT: ${file(./${opt:stage, self:provider.stage}.env.yml):${opt:stage, self:provider.stage}.MQTT_PORT}
 
 custom:
   dynamodb:
