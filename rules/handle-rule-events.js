@@ -51,8 +51,12 @@ module.exports.handleRuleEvents = (userId, data, callback) => {
               // Update values for rule's data
               var code = rule.actions;
               code = code.split('{{blocky_data_device_name}}').join('"' + deviceName + '"');
-              code = code.split('{{blocky_data_mqtt|' + triggerTopic + '}}').join('"' + data.message + '"');
-
+              if (isNaN(data.message)) {
+                code = code.split('{{blocky_data_mqtt|' + triggerTopic + '}}').join('"' + data.message + '"');
+              } else {
+                code = code.split('{{blocky_data_mqtt|' + triggerTopic + '}}').join(data.message);
+              }
+              
               var ruleMqttTopicList = utils.getStrBetween(code, '{{blocky_data_mqtt|', '}}');
               var subcribedTopics = [];
               for (var j = 0; j < ruleMqttTopicList.length; j++) {
@@ -75,7 +79,11 @@ module.exports.handleRuleEvents = (userId, data, callback) => {
                       if (data[k].data.length && typeof data[k].data[0].data != 'undefined') {
                         message = data[k].data[0].data;
                       }
-                      code = code.split('{{blocky_data_mqtt|' + topic + '}}').join('"' + message + '"');
+                      if (isNaN(message)) {
+                        code = code.split('{{blocky_data_mqtt|' + topic + '}}').join('"' + message + '"');
+                      } else {
+                        code = code.split('{{blocky_data_mqtt|' + topic + '}}').join(message);
+                      }
                     }
                     processRule(code);
                   }
